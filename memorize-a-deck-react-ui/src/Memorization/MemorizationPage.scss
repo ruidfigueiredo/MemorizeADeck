@@ -1,0 +1,121 @@
+.memorization-page {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    .cards-seen-container {
+        flex: 1;
+        overflow: auto;
+    }
+    .memorization-area {
+        padding: 50px;
+        padding-bottom: 20px;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+
+        .current-card-container{
+            text-align: center;
+            min-height: 220px; 
+        }
+
+        .card-association-container{
+            display: flex;
+            margin: auto;            
+        }       
+    }
+    .time-container {
+        min-height: 60px;
+        text-align: center;
+    }
+}
+
+.cards-list {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    padding: 0 10px;
+    > * {
+        margin: 10px;
+        animation: slide-right 100ms ease-in;
+    }
+}
+
+@keyframes slide-right {
+    0% {
+        transform: translateX(10px);
+        opacity: 0;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.turned-deck {
+    position: relative;
+    min-width: 155px;           
+}
+
+.options {
+    position: fixed;    
+    bottom: 0;
+    left: 0;
+    right: 0;    
+    height:0;
+    padding: 0px;    
+    background-color: darkgreen;
+    transition: height 50ms ease-out;
+    display: flex;
+    justify-content: flex-end;
+    user-select: none;
+    
+
+    > div {     
+        cursor: pointer;   
+        margin-right: 10px;
+        
+        div:first-child {
+            font-size: 30px;  
+            text-shadow: black 2px 2px 4px;
+            text-align: center;
+            margin: 5px;
+        }
+
+        div:last-child {
+            font-size: 11px;
+            text-align: center;
+            max-width: 90px;
+        }
+
+        &:first-child {
+            margin-right: auto;
+        }
+    }
+    
+
+    &.open{
+        padding: 10px;
+        padding-right: 80px;
+        height: 65px;
+    }
+}
+
+.options-toggle {
+    position: fixed;
+    bottom: 15px;    
+    right: 15px;            
+    font-size: 30px;
+    transition: transform 100ms ease-out;
+    user-select: none;
+    text-shadow: black 2px 2px 4px;
+    &:hover {
+        cursor: pointer;
+    }
+
+    &.open {
+        transform: rotateZ(180deg);
+        text-shadow: black -2px -2px 4px;
+    }
+}
+

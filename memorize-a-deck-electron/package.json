@@ -1,0 +1,19 @@
+{
+  "name": "memorize-a-deck-electron",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "start-prod": "NODE_ENV=production electron ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^7.1.8"
+  },
+  "dependencies": {
+    "electron-cgi": "file:../../published/electron-cgi"
+  }
+}
