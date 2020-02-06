@@ -1,0 +1,17 @@
+.modal {
+    position: fixed;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid white;
+    padding: 20px;
+    background-color: rgba(darkgreen, 0.9);
+
+    .close-button {
+        position: absolute;
+        top: 5px;
+        right:5px;
+        font-size: 30px;
+        cursor: pointer;
+    }    
+}

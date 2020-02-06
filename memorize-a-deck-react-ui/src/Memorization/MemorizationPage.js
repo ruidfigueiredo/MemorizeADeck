@@ -1,18 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { startMemorization, memorizationEvents, turnCard, getEllapsedTime, toggleIsCardAssociationVisible } from './memorization.service'
 import { useLocation, useHistory } from 'react-router-dom';
 import "./MemorizationPage.scss"
 import { Card } from '../Card';
+import { KeyboardShortcutsModal } from '../KeyboardShortcutsModal';
 
 export function MemorizationPage() {
-    const [isInitializing, setIsInitializing] = useState(true)
-    const [currentCard, setCurrentCard] = useState()
-    const [cardAssociation, setCardAssociation] = useState()
-    const [isLastCard, setIsLastCard] = useState(false)
-    const [isCardAssociationVisible, setIsCardAssociationVisible] = useState(false)
-    const [cardsSeen, setCardsSeen] = useState([])
-    const [cardsNotSeenCount, setCardsNotSeenCount] = useState(0)
-    const [ellapsedTime, setEllapsedTime] = useState()    
+    const [isInitializing, setIsInitializing] = useState(true);
+    const [currentCard, setCurrentCard] = useState();
+    const [cardAssociation, setCardAssociation] = useState();
+    const [isLastCard, setIsLastCard] = useState(false);
+    const [isCardAssociationVisible, setIsCardAssociationVisible] = useState(false);
+    const [cardsSeen, setCardsSeen] = useState([]);
+    const [cardsNotSeenCount, setCardsNotSeenCount] = useState(0);
+    const [ellapsedTime, setEllapsedTime] = useState();    
+
+    const [isKeyboardShortcutsModalVisible, setIsKeyboardShortcutsModalVisible] = useState(false);
 
     const location = useLocation();
     const history = useHistory();
@@ -52,38 +55,44 @@ export function MemorizationPage() {
     }, [location.state, isInitializing]);
 
     useEffect(() => {
-        console.log('turn card effect')
-        if (isInitializing) return;
-        if (isLastCard) return;
-        // (async function () {
-        //     await new Promise(r => setTimeout(() => r(), 1000));
-        //     await turnCard();
-        // })();
-    }, [isInitializing, currentCard, isLastCard])
-
-    useEffect(() => {
         const container = document.querySelector('.cards-seen-container');
         container.scrollTop = container.scrollHeight;
     }, [cardsSeen])
 
-    async function handleTurnCard() {
+
+    const handleTurnCard = useCallback(async function handleTurnCard() {
         if (isInitializing) return;
         await turnCard()
-    }
+    }, [isInitializing]);
+
+    useEffect(() => {
+        const handleKeydown = async e => {            
+            if (e.key === 't' || e.key === 'T' || e.key === 'Enter') {
+                await handleTurnCard();
+            }
+        };
+        document.body.addEventListener('keydown', handleKeydown);
+        return () => {
+            document.body.removeEventListener("keydown", handleKeydown);
+        }
+    }, [handleTurnCard])
+
+
 
     return (
         <div className="memorization-page">
+            <KeyboardShortcutsModal isOpen={isKeyboardShortcutsModalVisible} onClose={() => setIsKeyboardShortcutsModalVisible(false)}>
+                <h1>This is a test</h1>
+                <h1>This is a test</h1>
+                <h1>This is a test</h1>
+                <h1>This is a test</h1>
+                <h1>This is a test</h1>
+            </KeyboardShortcutsModal>
             <div className="cards-seen-container">
                 <CardList cards={cardsSeen} />
             </div>
             <div className="memorization-area">
-                {/* <pre style={{ marginTop: '0', width: '200px' }}>
-                    currentCard: {JSON.stringify(currentCard, null, 2)}<br />
-                    cardAssociation: {JSON.stringify(cardAssociation, null, 2)}<br />
-                    isLastCard: {JSON.stringify(isLastCard, null, 2)}<br />
-                    cardsNotSeenCount: {cardsNotSeenCount}
-                </pre> */}
-                <div></div>
+                <div>Stop button</div>
                 <div></div>
                 <div className="current-card-container">
                     {currentCard && <Card suit={currentCard.suit} face={currentCard.face} />}
@@ -96,7 +105,7 @@ export function MemorizationPage() {
             </div>
             <Options>
                 <Options.Option onClick={_ => history.push('/')} icon="&#9664;" title="Main Menu"/>
-                <Options.Option onClick={_ => history.push('/')} icon="&#9000;" title="Keyboard Shortcuts"/>
+                <Options.Option onClick={_ => setIsKeyboardShortcutsModalVisible(true)} icon="&#9000;" title="Keyboard Shortcuts"/>
                 <Options.Option onClick={_ => history.push('/')} icon="&#8703;" title="Card Memory Association List"/>
                 <Options.Option onClick={async _ => await toggleIsCardAssociationVisible()} icon="&#128466;" title="Show Card Association"/>
             </Options>
