@@ -1,17 +1,26 @@
-.modal {
+.modal-container {
     position: fixed;
-    top: 50%;
-    left:50%;
-    transform: translate(-50%, -50%);
-    border: 1px solid white;
-    padding: 20px;
-    background-color: rgba(darkgreen, 0.9);
-
-    .close-button {
-        position: absolute;
-        top: 5px;
-        right:5px;
-        font-size: 30px;
-        cursor: pointer;
-    }    
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;    
+    .modal {
+        position: relative;
+        margin: auto;
+        border: 1px solid white;
+        padding: 30px;
+        background-color: rgba(darkgreen, 0.9);
+        max-width: 80%;
+        max-height: 80%;
+    
+        .close-button {
+            position: absolute;
+            top: 5px;
+            right:10px;
+            font-size: 30px;
+            cursor: pointer;
+        }    
+    }
 }
+

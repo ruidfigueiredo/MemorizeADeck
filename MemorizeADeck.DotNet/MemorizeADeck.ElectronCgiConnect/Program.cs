@@ -2,19 +2,20 @@
 using System.Collections.Generic;
 using Blinkingcaret.Cards;
 using Blinkingcaret.MemorizeADeck.ViewModels;
+using Blinkingcaret.MemorizeADeck.ViewModels.CardAssociations;
 using ElectronCgi.DotNet;
 
 namespace MemorizeADeck.ElectronCgiConnect
 {
     class Program
     {
-        static void SetupMemorizationPageViewModel(Connection connection)
+        static void SetupMemorizationPageViewModel(Connection connection, ICardAssociationRepository cardAssociationRepository)
         {
             MemorizationPageViewModel memorizationPageViewModel = null;
             connection.OnAsync<dynamic>("memorization.start", async options =>
             {
                 memorizationPageViewModel = new MemorizationPageViewModel();
-                memorizationPageViewModel.CardAssocationRepository = new CardAssociationRepository();
+                memorizationPageViewModel.CardAssocationRepository = cardAssociationRepository;
                 await memorizationPageViewModel.LoadCardAssociationsAsync();
                 memorizationPageViewModel.InitDeck(
                     (bool)options.IncludeSpades,
@@ -214,8 +215,13 @@ namespace MemorizeADeck.ElectronCgiConnect
         {
             var connection = new ConnectionBuilder().WithLogging(minimumLogLevel: Microsoft.Extensions.Logging.LogLevel.Trace).Build();
 
-            SetupMemorizationPageViewModel(connection);
+            var cardAssociationRepository = new CardAssociationRepository();
+            SetupMemorizationPageViewModel(connection, cardAssociationRepository);
             SetupRecallPageViewModel(connection);
+
+            connection.OnAsync<IEnumerable<CardAssociationViewModel>>("cardAssociations.getAll", async () => {
+                return await cardAssociationRepository.GetAssociationsAsync();
+            });
 
             connection.Listen();
 

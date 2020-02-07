@@ -1,0 +1,10 @@
+.card-word-links {
+    overflow: auto;
+    display: flex;
+    flex-flow: row wrap; 
+    text-align: center;    
+    height: -webkit-fill-available;
+    > div {
+        margin: 15px;
+    }
+}

@@ -4,6 +4,7 @@ import { useLocation, useHistory } from 'react-router-dom';
 import "./MemorizationPage.scss"
 import { Card } from '../Card';
 import { KeyboardShortcutsModal } from '../KeyboardShortcutsModal';
+import { CardWordLinksModal } from '../CardAssociations/CardWordLinksModal';
 
 export function MemorizationPage() {
     const [isInitializing, setIsInitializing] = useState(true);
@@ -16,6 +17,7 @@ export function MemorizationPage() {
     const [ellapsedTime, setEllapsedTime] = useState();    
 
     const [isKeyboardShortcutsModalVisible, setIsKeyboardShortcutsModalVisible] = useState(false);
+    const [isCardWordLinksModalOpen, setIsCardWordLinksModalOpen]= useState(false);
 
     const location = useLocation();
     const history = useHistory();
@@ -81,13 +83,7 @@ export function MemorizationPage() {
 
     return (
         <div className="memorization-page">
-            <KeyboardShortcutsModal isOpen={isKeyboardShortcutsModalVisible} onClose={() => setIsKeyboardShortcutsModalVisible(false)}>
-                <h1>This is a test</h1>
-                <h1>This is a test</h1>
-                <h1>This is a test</h1>
-                <h1>This is a test</h1>
-                <h1>This is a test</h1>
-            </KeyboardShortcutsModal>
+            <KeyboardShortcutsModal isOpen={isKeyboardShortcutsModalVisible} onClose={() => setIsKeyboardShortcutsModalVisible(false)}/>            
             <div className="cards-seen-container">
                 <CardList cards={cardsSeen} />
             </div>
@@ -103,10 +99,11 @@ export function MemorizationPage() {
             <div className="time-container">
                 {ellapsedTime && <h3>{ellapsedTime}</h3>}
             </div>
+            <CardWordLinksModal isOpen={isCardWordLinksModalOpen} onClose={() => setIsCardWordLinksModalOpen(false)}/>
             <Options>
                 <Options.Option onClick={_ => history.push('/')} icon="&#9664;" title="Main Menu"/>
-                <Options.Option onClick={_ => setIsKeyboardShortcutsModalVisible(true)} icon="&#9000;" title="Keyboard Shortcuts"/>
-                <Options.Option onClick={_ => history.push('/')} icon="&#8703;" title="Card Memory Association List"/>
+                <Options.Option onClick={_ => setIsKeyboardShortcutsModalVisible(!isKeyboardShortcutsModalVisible)} icon="&#9000;" title="Keyboard Shortcuts"/>
+                <Options.Option onClick={_ => setIsCardWordLinksModalOpen(!isCardWordLinksModalOpen)} icon="&#8703;" title="Card Memory Association List"/>
                 <Options.Option onClick={async _ => await toggleIsCardAssociationVisible()} icon="&#128466;" title="Show Card Association"/>
             </Options>
         </div>
