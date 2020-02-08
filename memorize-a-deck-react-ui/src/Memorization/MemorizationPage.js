@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import { startMemorization, memorizationEvents, turnCard, getEllapsedTime, toggleIsCardAssociationVisible } from './memorization.service'
+import { startMemorization, memorizationEvents, turnCard, getEllapsedTime, toggleIsCardAssociationVisible, stopMemorization } from './memorization.service'
 import { useLocation, useHistory } from 'react-router-dom';
 import "./MemorizationPage.scss"
 import { Card } from '../Card';
@@ -7,24 +7,31 @@ import { KeyboardShortcutsModal } from '../KeyboardShortcutsModal';
 import { CardWordLinksModal } from '../CardAssociations/CardWordLinksModal';
 
 export function MemorizationPage() {
-    const [isInitializing, setIsInitializing] = useState(true);
+    const [isInitialized, setIsInitialized] = useState(true);
     const [currentCard, setCurrentCard] = useState();
     const [cardAssociation, setCardAssociation] = useState();
     const [isLastCard, setIsLastCard] = useState(false);
     const [isCardAssociationVisible, setIsCardAssociationVisible] = useState(false);
     const [cardsSeen, setCardsSeen] = useState([]);
     const [cardsNotSeenCount, setCardsNotSeenCount] = useState(0);
-    const [ellapsedTime, setEllapsedTime] = useState();    
+    const [ellapsedTime, setEllapsedTime] = useState();
 
     const [isKeyboardShortcutsModalVisible, setIsKeyboardShortcutsModalVisible] = useState(false);
-    const [isCardWordLinksModalOpen, setIsCardWordLinksModalOpen]= useState(false);
+    const [isCardWordLinksModalOpen, setIsCardWordLinksModalOpen] = useState(false);
 
     const location = useLocation();
     const history = useHistory();
-    useEffect(() => {
-        if (!isInitializing) return;
-        const options = location.state || {};
-        let ellapsedTimeIntervalId = null
+
+    useEffect(() => {        
+        const handleMemorizationComplete = ({ cardsMemorized, memorizationTime }) => {
+            history.push({
+                pathname: '/recall',
+                state: {
+                    cardsMemorized,
+                    memorizationTime
+                }
+            });
+        };
 
         memorizationEvents.on('cardAssociationChanged', setCardAssociation);
         memorizationEvents.on('isLastCard', setIsLastCard);
@@ -32,29 +39,35 @@ export function MemorizationPage() {
         memorizationEvents.on('cardsSeen', setCardsSeen);
         memorizationEvents.on('cardsNotSeenCount', setCardsNotSeenCount);
         memorizationEvents.on('isCardAssociationVisible', setIsCardAssociationVisible)
+        memorizationEvents.on('complete', handleMemorizationComplete)
 
+        return () => {
+            memorizationEvents.off('cardAssociationChanged', setCardAssociation);
+            memorizationEvents.off('isLastCard', setIsLastCard);
+            memorizationEvents.off('currentCardChanged', setCurrentCard);
+            memorizationEvents.off('cardsSeen', setCardsSeen);
+            memorizationEvents.off('cardsNotSeenCount', setCardsNotSeenCount);
+        }
+    }, [history]);
+
+    useEffect(() => {
+        let ellapsedTimeIntervalId = null
+        const options = location.state || {};
         startMemorization({
             includeSpades: options.includeSpades || true,
             includeDiamonds: options.includeDiamonds || false,
             includeHearts: options.includeHearts || false,
             includeClubs: options.includeClubs || false,
         }).then(() => {
-            setIsInitializing(false)
+            setIsInitialized(true)
             ellapsedTimeIntervalId = window.setInterval(() => {
                 getEllapsedTime().then(setEllapsedTime);
             }, 1000);
         });
         return () => {
-            return () => {
-                memorizationEvents.off('cardAssociationChanged', setCardAssociation);
-                memorizationEvents.off('isLastCard', setIsLastCard);
-                memorizationEvents.off('currentCardChanged', setCurrentCard);
-                memorizationEvents.off('cardsSeen', setCardsSeen);
-                memorizationEvents.off('cardsNotSeenCount', setCardsNotSeenCount);
-                window.clearInterval(ellapsedTimeIntervalId);
-            }
+            window.clearInterval(ellapsedTimeIntervalId);
         }
-    }, [location.state, isInitializing]);
+    }, [location.state]);
 
     useEffect(() => {
         const container = document.querySelector('.cards-seen-container');
@@ -63,12 +76,12 @@ export function MemorizationPage() {
 
 
     const handleTurnCard = useCallback(async function handleTurnCard() {
-        if (isInitializing) return;
+        if (!isInitialized) return;
         await turnCard()
-    }, [isInitializing]);
+    }, [isInitialized]);
 
     useEffect(() => {
-        const handleKeydown = async e => {            
+        const handleKeydown = async e => {
             if (e.key === 't' || e.key === 'T' || e.key === 'Enter') {
                 await handleTurnCard();
             }
@@ -83,12 +96,12 @@ export function MemorizationPage() {
 
     return (
         <div className="memorization-page">
-            <KeyboardShortcutsModal isOpen={isKeyboardShortcutsModalVisible} onClose={() => setIsKeyboardShortcutsModalVisible(false)}/>            
+            <KeyboardShortcutsModal isOpen={isKeyboardShortcutsModalVisible} onClose={() => setIsKeyboardShortcutsModalVisible(false)} />
             <div className="cards-seen-container">
                 <CardList cards={cardsSeen} />
             </div>
             <div className="memorization-area">
-                <div>Stop button</div>
+                <div className="stop" onClick={async () => await stopMemorization()}>Stop</div>
                 <div></div>
                 <div className="current-card-container">
                     {currentCard && <Card suit={currentCard.suit} face={currentCard.face} />}
@@ -99,12 +112,12 @@ export function MemorizationPage() {
             <div className="time-container">
                 {ellapsedTime && <h3>{ellapsedTime}</h3>}
             </div>
-            <CardWordLinksModal isOpen={isCardWordLinksModalOpen} onClose={() => setIsCardWordLinksModalOpen(false)}/>
+            <CardWordLinksModal isOpen={isCardWordLinksModalOpen} onClose={() => setIsCardWordLinksModalOpen(false)} />
             <Options>
-                <Options.Option onClick={_ => history.push('/')} icon="&#9664;" title="Main Menu"/>
-                <Options.Option onClick={_ => setIsKeyboardShortcutsModalVisible(!isKeyboardShortcutsModalVisible)} icon="&#9000;" title="Keyboard Shortcuts"/>
-                <Options.Option onClick={_ => setIsCardWordLinksModalOpen(!isCardWordLinksModalOpen)} icon="&#8703;" title="Card Memory Association List"/>
-                <Options.Option onClick={async _ => await toggleIsCardAssociationVisible()} icon="&#128466;" title="Show Card Association"/>
+                <Options.Option onClick={_ => history.push('/')} icon="&#9664;" title="Main Menu" />
+                <Options.Option onClick={_ => setIsKeyboardShortcutsModalVisible(!isKeyboardShortcutsModalVisible)} icon="&#9000;" title="Keyboard Shortcuts" />
+                <Options.Option onClick={_ => setIsCardWordLinksModalOpen(!isCardWordLinksModalOpen)} icon="&#8703;" title="Card Memory Association List" />
+                <Options.Option onClick={async _ => await toggleIsCardAssociationVisible()} icon="&#128466;" title="Show Card Association" />
             </Options>
         </div>
     );

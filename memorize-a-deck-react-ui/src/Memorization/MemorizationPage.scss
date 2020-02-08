@@ -20,7 +20,15 @@
         .card-association-container{
             display: flex;
             margin: auto;            
-        }       
+        } 
+        
+        .stop {
+            width: 150px;
+            line-height: 208px;
+            text-align: center;
+            border: 1px solid white;
+            cursor: pointer;
+        }
     }
     .time-container {
         min-height: 60px;
@@ -55,6 +63,7 @@
 .turned-deck {
     position: relative;
     min-width: 155px;           
+    cursor: pointer;
 }
 
 .options {
