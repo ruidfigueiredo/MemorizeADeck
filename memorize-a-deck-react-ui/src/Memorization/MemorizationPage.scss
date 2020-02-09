@@ -22,12 +22,16 @@
             margin: auto;            
         } 
         
-        .stop {
+        .huge-button {
             width: 150px;
             line-height: 208px;
             text-align: center;
             border: 1px solid white;
             cursor: pointer;
+
+            &.disabled {
+                opacity: 0.5;
+            }
         }
     }
     .time-container {

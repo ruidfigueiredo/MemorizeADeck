@@ -12,6 +12,7 @@ export function MemorizationPage() {
     const [cardAssociation, setCardAssociation] = useState();
     const [isLastCard, setIsLastCard] = useState(false);
     const [isCardAssociationVisible, setIsCardAssociationVisible] = useState(false);
+    const [isCurrentCardVisible, setIsCurrentCardVisible] = useState(false)
     const [cardsSeen, setCardsSeen] = useState([]);
     const [cardsNotSeenCount, setCardsNotSeenCount] = useState(0);
     const [ellapsedTime, setEllapsedTime] = useState();
@@ -38,8 +39,9 @@ export function MemorizationPage() {
         memorizationEvents.on('currentCardChanged', setCurrentCard);
         memorizationEvents.on('cardsSeen', setCardsSeen);
         memorizationEvents.on('cardsNotSeenCount', setCardsNotSeenCount);
-        memorizationEvents.on('isCardAssociationVisible', setIsCardAssociationVisible)
-        memorizationEvents.on('complete', handleMemorizationComplete)
+        memorizationEvents.on('isCardAssociationVisible', setIsCardAssociationVisible);
+        memorizationEvents.on('isCurrentCardVisible', setIsCurrentCardVisible);
+        memorizationEvents.on('complete', handleMemorizationComplete);
 
         return () => {
             memorizationEvents.off('cardAssociationChanged', setCardAssociation);
@@ -101,13 +103,14 @@ export function MemorizationPage() {
                 <CardList cards={cardsSeen} />
             </div>
             <div className="memorization-area">
-                <div className="stop" onClick={async () => await stopMemorization()}>Stop</div>
+                <div className="huge-button" onClick={async () => await stopMemorization()}>Stop</div>
                 <div></div>
                 <div className="current-card-container">
                     {currentCard && <Card suit={currentCard.suit} face={currentCard.face} />}
                 </div>
                 <div className="card-association-container">{isCardAssociationVisible && <h3>{cardAssociation}</h3>}</div>
-                <TurnedDeck cardCount={cardsNotSeenCount} onClick={handleTurnCard} />
+                {!isLastCard && <TurnedDeck cardCount={cardsNotSeenCount} onClick={handleTurnCard} />}
+                {isLastCard && <div className={`huge-button ${!isCurrentCardVisible ? 'disabled' : ''}`} onClick={handleTurnCard}>Finish</div>}
             </div>
             <div className="time-container">
                 {ellapsedTime && <h3>{ellapsedTime}</h3>}
