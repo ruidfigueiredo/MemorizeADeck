@@ -49,6 +49,9 @@ export function MemorizationPage() {
             memorizationEvents.off('currentCardChanged', setCurrentCard);
             memorizationEvents.off('cardsSeen', setCardsSeen);
             memorizationEvents.off('cardsNotSeenCount', setCardsNotSeenCount);
+            memorizationEvents.off('isCardAssociationVisible', setIsCardAssociationVisible);
+            memorizationEvents.off('isCurrentCardVisible', setIsCurrentCardVisible);
+            memorizationEvents.off('complete', handleMemorizationComplete);    
         }
     }, [history]);
 
@@ -56,10 +59,10 @@ export function MemorizationPage() {
         let ellapsedTimeIntervalId = null
         const options = location.state || {};
         startMemorization({
-            includeSpades: options.includeSpades || true,
-            includeDiamonds: options.includeDiamonds || false,
-            includeHearts: options.includeHearts || false,
-            includeClubs: options.includeClubs || false,
+            includeSpades: options.includeSpades,
+            includeDiamonds: options.includeDiamonds,
+            includeHearts: options.includeHearts,
+            includeClubs: options.includeClubs,
         }).then(() => {
             setIsInitialized(true)
             ellapsedTimeIntervalId = window.setInterval(() => {
@@ -86,6 +89,8 @@ export function MemorizationPage() {
         const handleKeydown = async e => {
             if (e.key === 't' || e.key === 'T' || e.key === 'Enter') {
                 await handleTurnCard();
+            }else if (e.key.toUpperCase() === 'S') {
+                await stopMemorization();
             }
         };
         document.body.addEventListener('keydown', handleKeydown);
@@ -110,7 +115,7 @@ export function MemorizationPage() {
                 </div>
                 <div className="card-association-container">{isCardAssociationVisible && <h3>{cardAssociation}</h3>}</div>
                 {!isLastCard && <TurnedDeck cardCount={cardsNotSeenCount} onClick={handleTurnCard} />}
-                {isLastCard && <div className={`huge-button ${!isCurrentCardVisible ? 'disabled' : ''}`} onClick={handleTurnCard}>Finish</div>}
+                {isLastCard && <div className={`huge-button ${!isCurrentCardVisible ? 'disabled' : ''}`} style={{marginLeft: 'auto'}} onClick={handleTurnCard}>Finish</div>}
             </div>
             <div className="time-container">
                 {ellapsedTime && <h3>{ellapsedTime}</h3>}

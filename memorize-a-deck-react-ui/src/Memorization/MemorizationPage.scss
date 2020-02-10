@@ -27,6 +27,7 @@
             line-height: 208px;
             text-align: center;
             border: 1px solid white;
+            user-select: none;
             cursor: pointer;
 
             &.disabled {
