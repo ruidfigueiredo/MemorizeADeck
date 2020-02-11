@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './SuitSelectorModal.scss';
 import { Modal } from '../Modal';
+import { PlayingCardButton } from '../PlayingCardButton';
 
 export function SuitSelectorModal({ isOpen, onSuitsSelected, onClose }) {
     const [isSpadesSelected, setIsSpadesSelected] = useState(true);
@@ -12,10 +13,10 @@ export function SuitSelectorModal({ isOpen, onSuitsSelected, onClose }) {
             <Modal isOpen={isOpen} onClose={onClose}>
                 <h2>Selected Suits</h2>
                 <div className="suits-container">
-                    <button onClick={() => setIsSpadesSelected(!isSpadesSelected)} className={`${isSpadesSelected ? 'selected' : ''}`}><SuitImage suitName="Spade" /></button>
-                    <button onClick={() => setIsDiamondsSelected(!isDiamondsSelected)} className={`${isDiamondsSelected ? 'selected' : ''}`}><SuitImage suitName="Diamond" /></button>
-                    <button onClick={() => setIsClubsSelected(!isClubsSelected)} className={`${isClubsSelected ? 'selected' : ''}`}><SuitImage suitName="Club" /></button>
-                    <button onClick={() => setIsHeartsSelected(!isHeartsSelected)} className={`${isHeartsSelected ? 'selected' : ''}`}><SuitImage suitName="Heart" /></button>
+                    <PlayingCardButton onClick={() => setIsSpadesSelected(!isSpadesSelected)} className={`${isSpadesSelected ? 'selected' : ''}`} playingCardName="Spade"/>
+                    <PlayingCardButton onClick={() => setIsDiamondsSelected(!isDiamondsSelected)} className={`${isDiamondsSelected ? 'selected' : ''}`} playingCardName="Diamond"/>
+                    <PlayingCardButton onClick={() => setIsClubsSelected(!isClubsSelected)} className={`${isClubsSelected ? 'selected' : ''}`} playingCardName="Club"/>
+                    <PlayingCardButton onClick={() => setIsHeartsSelected(!isHeartsSelected)} className={`${isHeartsSelected ? 'selected' : ''}`} playingCardName="Heart"/>
                 </div>
                 <button disabled={!isSpadesSelected && !isDiamondsSelected && !isClubsSelected && !isHeartsSelected} onClick={() => {                    
                     onSuitsSelected({
@@ -29,6 +30,3 @@ export function SuitSelectorModal({ isOpen, onSuitsSelected, onClose }) {
         </div>)
 }
 
-function SuitImage({ suitName }) {
-    return <div className="suit-image" style={{ backgroundImage: `url(/PlayingCards/${suitName}.png)` }}></div>
-}

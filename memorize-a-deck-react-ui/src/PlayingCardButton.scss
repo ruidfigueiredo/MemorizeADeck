@@ -1,0 +1,24 @@
+button.playing-card-button {
+    width: 100px;
+    height:100px;
+    padding: 5px;            
+
+    &:hover {
+        background-color: gray;
+    }
+
+    &.selected {
+        background-color: white;
+        &:hover {
+            background-color: lightgray;
+        }
+    }
+    
+
+    div.playing-card-image {
+        height: -webkit-fill-available;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+}

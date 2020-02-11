@@ -1,0 +1,19 @@
+.recall-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    .cards-recalled-container {
+        flex: 1;
+        border: 2px solid purple;
+    }
+    .controls {
+        flex-basis: 400px;
+        border: 2px dashed blue;
+        display: flex;
+        flex-direction: row;
+        > div {
+            flex: 1;
+            border: 1px solid hotpink;
+        }
+    }
+}
