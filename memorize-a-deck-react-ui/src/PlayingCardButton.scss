@@ -1,7 +1,10 @@
 button.playing-card-button {
     width: 100px;
     height:100px;
-    padding: 5px;            
+    padding: 5px;   
+    border: 2px solid white;    
+    outline: none;     
+    cursor: pointer;
 
     &:hover {
         background-color: gray;
