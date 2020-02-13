@@ -12,6 +12,6 @@ window.addEventListener('DOMContentLoaded', () => {
   })
 
 window.memorizationService = require('./memorization');
-window.cardAssociations = require('./card-associations');
-
+window.cardAssociationsService = require('./card-associations');
+window.recallService = require('./recall');
 

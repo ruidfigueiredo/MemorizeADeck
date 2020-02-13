@@ -1,24 +1,33 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
+import React, {useState} from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
 import './RecallPage.scss';
 import { PlayingCardButton } from '../PlayingCardButton';
+import { Options } from '../Options';
+import { KeyboardShortcutsModal } from '../KeyboardShortcutsModal';
+import { CardWordLinksModal } from '../CardAssociations/CardWordLinksModal';
+import {suit, face, selectFace, selectSuit, recallEvents} from './recall.service';
 
 export function RecallPage() {
+    const [isKeyboardShortcutsModalVisible, setIsKeyboardShortcutsModalVisible] = useState(false);
+    const [isCardWordLinksModalOpen, setIsCardWordLinksModalOpen] = useState(false);
+
     const state = useLocation().state || {
         "cardsMemorized": [{ "suit": 1, "face": 5 }, { "suit": 1, "face": 9 }, { "suit": 1, "face": 8 }, { "suit": 1, "face": 4 }, { "suit": 1, "face": 1 }, { "suit": 1, "face": 2 }, { "suit": 1, "face": 11 }, { "suit": 1, "face": 6 }, { "suit": 1, "face": 0 }, { "suit": 1, "face": 12 }, { "suit": 1, "face": 7 }, { "suit": 1, "face": 3 }, { "suit": 1, "face": 10 }],
         "memorizationTime": "00:00:06.3177712"
-    };
+    };    
     console.log(state)
+    const history = useHistory();
+
     return (
         <div className="recall-page">
             <div className="cards-recalled-container"></div>
             <div className="controls">
                 <div className="suits-container">
                     <div>
-                        <PlayingCardButton playingCardName="Club" onClick={() => console.log('club')} />
-                        <PlayingCardButton playingCardName="Diamond" onClick={() => console.log('Diamond')} />
-                        <PlayingCardButton playingCardName="Heart" onClick={() => console.log('Heart')} />
-                        <PlayingCardButton playingCardName="Spade" onClick={() => console.log('Spade')} />
+                        <PlayingCardButton playingCardName="Club" onClick={async () => await selectSuit(suit.club)} />
+                        <PlayingCardButton playingCardName="Diamond" onClick={async () => await selectSuit(suit.diamond)} />
+                        <PlayingCardButton playingCardName="Heart" onClick={async () => await selectSuit(suit.heart)} />
+                        <PlayingCardButton playingCardName="Spade" onClick={async () => await selectSuit(suit.spade)} />
                     </div>
                 </div>
                 <div className="faces-container">
@@ -47,6 +56,13 @@ export function RecallPage() {
                     </div>                    
                 </div>
             </div>
+            <Options>
+                <Options.Option onClick={_ => history.push('/')} icon="&#9664;" title="Main Menu" />
+                <Options.Option onClick={_ => setIsKeyboardShortcutsModalVisible(!isKeyboardShortcutsModalVisible)} icon="&#9000;" title="Keyboard Shortcuts" />
+                <Options.Option onClick={_ => setIsCardWordLinksModalOpen(!isCardWordLinksModalOpen)} icon="&#8703;" title="Card Memory Association List" />
+            </Options>    
+            <KeyboardShortcutsModal isOpen={isKeyboardShortcutsModalVisible} onClose={() => setIsKeyboardShortcutsModalVisible(false)} />
+            <CardWordLinksModal isOpen={isCardWordLinksModalOpen} onClose={() => setIsCardWordLinksModalOpen(false)} />
         </div>
     );
 }

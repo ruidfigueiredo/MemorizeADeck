@@ -5,6 +5,7 @@ import "./MemorizationPage.scss"
 import { Card } from '../Card';
 import { KeyboardShortcutsModal } from '../KeyboardShortcutsModal';
 import { CardWordLinksModal } from '../CardAssociations/CardWordLinksModal';
+import {Options} from '../Options'
 
 export function MemorizationPage() {
     const [isInitialized, setIsInitialized] = useState(true);
@@ -103,7 +104,6 @@ export function MemorizationPage() {
 
     return (
         <div className="memorization-page">
-            <KeyboardShortcutsModal isOpen={isKeyboardShortcutsModalVisible} onClose={() => setIsKeyboardShortcutsModalVisible(false)} />
             <div className="cards-seen-container">
                 <CardList cards={cardsSeen} />
             </div>
@@ -120,13 +120,14 @@ export function MemorizationPage() {
             <div className="time-container">
                 {ellapsedTime && <h3>{ellapsedTime}</h3>}
             </div>
-            <CardWordLinksModal isOpen={isCardWordLinksModalOpen} onClose={() => setIsCardWordLinksModalOpen(false)} />
             <Options>
                 <Options.Option onClick={_ => history.push('/')} icon="&#9664;" title="Main Menu" />
                 <Options.Option onClick={_ => setIsKeyboardShortcutsModalVisible(!isKeyboardShortcutsModalVisible)} icon="&#9000;" title="Keyboard Shortcuts" />
                 <Options.Option onClick={_ => setIsCardWordLinksModalOpen(!isCardWordLinksModalOpen)} icon="&#8703;" title="Card Memory Association List" />
                 <Options.Option onClick={async _ => await toggleIsCardAssociationVisible()} icon="&#128466;" title="Show Card Association" />
             </Options>
+            <KeyboardShortcutsModal isOpen={isKeyboardShortcutsModalVisible} onClose={() => setIsKeyboardShortcutsModalVisible(false)} />
+            <CardWordLinksModal isOpen={isCardWordLinksModalOpen} onClose={() => setIsCardWordLinksModalOpen(false)} />
         </div>
     );
 }
@@ -143,35 +144,3 @@ function TurnedDeck({ cardCount = 52, onClick }) {
     </div>)
 }
 
-
-function Options({ children }) {
-    const [isOpen, setIsOpen] = useState(false);
-
-    useEffect(() => {
-        const handleRightClick = e => {
-            if (e.button === 2 /*right click*/) {
-                setIsOpen(!isOpen);
-            }
-        }
-        document.addEventListener('mousedown', handleRightClick);
-        return () => {
-            document.removeEventListener('mousedown', handleRightClick);
-        }
-    }, [isOpen]);
-
-    return (
-        <>
-            <div className={`options ${isOpen ? 'open' : ''}`}>
-                {children}
-            </div>
-            <div className={`options-toggle ${isOpen ? 'open' : ''}`} onClick={() => setIsOpen(!isOpen)}>&#9650;</div>
-        </>
-    );
-}
-
-Options.Option = function ({ icon, title, onClick }) {
-    return (<div onClick={onClick}>
-        <div>{icon}</div>
-        <div>{title}</div>
-    </div>)
-}
