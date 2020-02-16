@@ -6,6 +6,7 @@ import { Options } from '../Options';
 import { KeyboardShortcutsModal } from '../KeyboardShortcutsModal';
 import { CardWordLinksModal } from '../CardAssociations/CardWordLinksModal';
 import { suit, face, selectFace, selectSuit, recallEvents, start } from './recall.service';
+import { CardList } from '../CardList';
 
 export function RecallPage() {
     const [isInitialized, setIsInitialized] = useState(false)
@@ -29,6 +30,8 @@ export function RecallPage() {
     const [isKingSelected, setIsKingSelected] = useState(false);
     const [isAceSelected, setIsAceSelected] = useState(false);
 
+    const [cardsRemembered, setCardsRemembered] = useState([]);
+
     const location = useLocation();
 
     const history = useHistory();
@@ -51,6 +54,8 @@ export function RecallPage() {
         recallEvents.on('isQueenSelected', setIsQueenSelected);
         recallEvents.on('isKingSelected', setIsKingSelected);
         recallEvents.on('isAceSelected', setIsAceSelected);
+
+        recallEvents.on('cardsRemembered', setCardsRemembered);
         return () => {
             recallEvents.off('isClubSelected', setIsClubSelected);
             recallEvents.off('isDiamondSelected', setIsDiamondSelected);
@@ -69,6 +74,8 @@ export function RecallPage() {
             recallEvents.off('isQueenSelected', setIsQueenSelected);
             recallEvents.off('isKingSelected', setIsKingSelected);
             recallEvents.off('isAceSelected', setIsAceSelected);    
+
+            recallEvents.off('cardsRemembered', setCardsRemembered);
         }
     }, [])
 
@@ -84,7 +91,9 @@ export function RecallPage() {
 
     return (
         <div className="recall-page">
-            <div className="cards-recalled-container"></div>
+            <div className="cards-recalled-container">
+                <CardList cards={cardsRemembered}/>
+            </div>
             <div className="controls">
                 <div className="suits-container">
                     <div>

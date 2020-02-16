@@ -6,6 +6,7 @@ import { Card } from '../Card';
 import { KeyboardShortcutsModal } from '../KeyboardShortcutsModal';
 import { CardWordLinksModal } from '../CardAssociations/CardWordLinksModal';
 import {Options} from '../Options'
+import { CardList } from '../CardList';
 
 export function MemorizationPage() {
     const [isInitialized, setIsInitialized] = useState(true);
@@ -130,12 +131,6 @@ export function MemorizationPage() {
             <CardWordLinksModal isOpen={isCardWordLinksModalOpen} onClose={() => setIsCardWordLinksModalOpen(false)} />
         </div>
     );
-}
-
-function CardList({ cards }) {
-    return (<div className="cards-list">
-        {cards.map((playingCard, index) => <Card key={index} suit={playingCard.suit} face={playingCard.face} mini />)}
-    </div>)
 }
 
 function TurnedDeck({ cardCount = 52, onClick }) {

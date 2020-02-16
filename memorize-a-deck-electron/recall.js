@@ -40,6 +40,10 @@ exports.start = ({cardsMemorized, memorizationTime}) => {
     return connection.send('recall.start', {cardsMemorized, memorizationTime});
 }
 
+exports.hint = () => {
+    return connection.send('recall.hint');
+}
+
 
 connection.on('recall.isClubSelected', isClubSelected => recallEvents.emit('isClubSelected', isClubSelected));
 connection.on('recall.isDiamondSelected', isDiamondSelected => recallEvents.emit('isDiamondSelected', isDiamondSelected));
@@ -58,3 +62,5 @@ connection.on('recall.isJackSelected', isJackSelected => recallEvents.emit('isJa
 connection.on('recall.isQueenSelected', isQueenSelected => recallEvents.emit('isQueenSelected', isQueenSelected));
 connection.on('recall.isKingSelected', isKingSelected => recallEvents.emit('isKingSelected', isKingSelected));
 connection.on('recall.isAceSelected', isAceSelected => recallEvents.emit('isAceSelected', isAceSelected));
+
+connection.on('recall.cardsRemembered', cardsRemembered => recallEvents.emit('cardsRemembered', cardsRemembered));

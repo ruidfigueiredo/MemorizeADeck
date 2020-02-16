@@ -32,7 +32,7 @@ namespace MemorizeADeck.ElectronCgiConnect
                 connection.Send("memorization.isLastCard", memorizationPageViewModel.IsLastCard);
                 connection.Send("memorization.cardsNotSeenCount", memorizationPageViewModel.CardsNotSeenCount);
                 connection.Send("memorization.cardsSeen", memorizationPageViewModel.CardsSeen);
-                
+
                 memorizationPageViewModel.PropertyChanged += (_, propertyChangedEventArgs) =>
                 {
                     switch (propertyChangedEventArgs.PropertyName)
@@ -101,7 +101,8 @@ namespace MemorizeADeck.ElectronCgiConnect
                 return false;
             });
 
-            connection.On("memorization.toggleIsCardAssociationVisible", () => {
+            connection.On("memorization.toggleIsCardAssociationVisible", () =>
+            {
                 memorizationPageViewModel.IsCardAssociationVisible = !memorizationPageViewModel.IsCardAssociationVisible;
             });
         }
@@ -123,6 +124,11 @@ namespace MemorizeADeck.ElectronCgiConnect
                 viewModel.CardsRemembered.CollectionChanged += (e, args) =>
                 {
                     connection.Send("recall.cardsRemembered", viewModel.CardsRemembered);
+                };
+
+                viewModel.HintConfirmationRequired += (e, args) =>
+                {
+                    connection.Send("recall.hintConfirmationRequired");
                 };
 
                 viewModel.RecallCompleted += memorizationTime =>
@@ -191,7 +197,7 @@ namespace MemorizeADeck.ElectronCgiConnect
             });
 
             connection.On("recall.selectFace", (Face face) =>
-            {                
+            {
                 if (viewModel.SelectFaceCommand.CanExecute(face))
                 {
                     viewModel.SelectFaceCommand.Execute(face);
@@ -210,6 +216,20 @@ namespace MemorizeADeck.ElectronCgiConnect
                 return false;
             });
 
+            connection.On("recall.hasHintBeenConfirmed", (bool isHintConfirmed) =>
+            {
+                viewModel.HasHintBeenConfirmed = isHintConfirmed;
+            });
+
+            connection.On("recall.hint", () =>
+            {
+                if (viewModel.ShowNextCardCommand.CanExecute(null))
+                {
+                    viewModel.ShowNextCardCommand.Execute(null);
+                    return true;
+                }
+                return false;
+            });
         }
         static void Main(string[] args)
         {
@@ -217,9 +237,10 @@ namespace MemorizeADeck.ElectronCgiConnect
 
             var cardAssociationRepository = new CardAssociationRepository();
             SetupMemorizationPageViewModel(connection, cardAssociationRepository);
-            SetupRecallPageViewModel(connection);            
+            SetupRecallPageViewModel(connection);
 
-            connection.OnAsync<IEnumerable<CardAssociationViewModel>>("cardAssociations.getAll", async () => {
+            connection.OnAsync<IEnumerable<CardAssociationViewModel>>("cardAssociations.getAll", async () =>
+            {
                 return await cardAssociationRepository.GetAssociationsAsync();
             });
 
