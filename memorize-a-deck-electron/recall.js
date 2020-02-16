@@ -36,21 +36,25 @@ exports.selectSuit = suit => {
     return connection.send('recall.selectSuit', suit);
 }
 
+exports.start = ({cardsMemorized, memorizationTime}) => {
+    return connection.send('recall.start', {cardsMemorized, memorizationTime});
+}
+
 
 connection.on('recall.isClubSelected', isClubSelected => recallEvents.emit('isClubSelected', isClubSelected));
 connection.on('recall.isDiamondSelected', isDiamondSelected => recallEvents.emit('isDiamondSelected', isDiamondSelected));
 connection.on('recall.isHeartSelected', isHeartSelected => recallEvents.emit('isHeartSelected', isHeartSelected));
 connection.on('recall.isSpadeSelected', isSpadeSelected => recallEvents.emit('isSpadeSelected', isSpadeSelected));
-connection.on('recal.isTwoSelected', isTwoSelected => recallEvents.emit('isTwoSelected', isTwoSelected));
-connection.on('recal.isThreeSelected', isThreeSelected => recallEvents.emit('isThreeSelected', isThreeSelected));
-connection.on('recal.isFourSelected', isFourSelected => recallEvents.emit('isFourSelected', isFourSelected));
-connection.on('recal.isFiveSelected', isFiveSelected => recallEvents.emit('isFiveSelected', isFiveSelected));
-connection.on('recal.isSixSelected', isSixSelected => recallEvents.emit('isSixSelected', isSixSelected));
-connection.on('recal.isSevenSelected', isSevenSelected => recallEvents.emit('isSevenSelected', isSevenSelected));
-connection.on('recal.isEightSelected', isEightSelected => recallEvents.emit('isEightSelected', isEightSelected));
-connection.on('recal.isNineSelected', isNineSelected => recallEvents.emit('isNineSelected', isNineSelected));
-connection.on('recal.isTenSelected', isTenSelected => recallEvents.emit('isTenSelected', isTenSelected));
-connection.on('recal.isJackSelected', isJackSelected => recallEvents.emit('isJackSelected', isJackSelected));
-connection.on('recal.isQueenSelected', isQueenSelected => recallEvents.emit('isQueenSelected', isQueenSelected));
-connection.on('recal.isKingSelected', isKingSelected => recallEvents.emit('isKingSelected', isKingSelected));
-connection.on('recal.isAceSelected', isAceSelected => recallEvents.emit('isAceSelected', isAceSelected));
+connection.on('recall.isTwoSelected', isTwoSelected => recallEvents.emit('isTwoSelected', isTwoSelected));
+connection.on('recall.isThreeSelected', isThreeSelected => recallEvents.emit('isThreeSelected', isThreeSelected));
+connection.on('recall.isFourSelected', isFourSelected => recallEvents.emit('isFourSelected', isFourSelected));
+connection.on('recall.isFiveSelected', isFiveSelected => recallEvents.emit('isFiveSelected', isFiveSelected));
+connection.on('recall.isSixSelected', isSixSelected => recallEvents.emit('isSixSelected', isSixSelected));
+connection.on('recall.isSevenSelected', isSevenSelected => recallEvents.emit('isSevenSelected', isSevenSelected));
+connection.on('recall.isEightSelected', isEightSelected => recallEvents.emit('isEightSelected', isEightSelected));
+connection.on('recall.isNineSelected', isNineSelected => recallEvents.emit('isNineSelected', isNineSelected));
+connection.on('recall.isTenSelected', isTenSelected => recallEvents.emit('isTenSelected', isTenSelected));
+connection.on('recall.isJackSelected', isJackSelected => recallEvents.emit('isJackSelected', isJackSelected));
+connection.on('recall.isQueenSelected', isQueenSelected => recallEvents.emit('isQueenSelected', isQueenSelected));
+connection.on('recall.isKingSelected', isKingSelected => recallEvents.emit('isKingSelected', isKingSelected));
+connection.on('recall.isAceSelected', isAceSelected => recallEvents.emit('isAceSelected', isAceSelected));

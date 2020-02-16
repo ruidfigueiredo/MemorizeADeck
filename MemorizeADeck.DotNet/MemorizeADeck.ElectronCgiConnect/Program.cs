@@ -147,43 +147,43 @@ namespace MemorizeADeck.ElectronCgiConnect
                             connection.Send("recall.isSpadeSelected", viewModel.IsSpadeSelected);
                             break;
                         case "IsTwoSelected":
-                            connection.Send("recal.isTwoSelected", viewModel.IsTwoSelected);
+                            connection.Send("recall.isTwoSelected", viewModel.IsTwoSelected);
                             break;
                         case "IsThreeSelected":
-                            connection.Send("recal.isThreeSelected", viewModel.IsThreeSelected);
+                            connection.Send("recall.isThreeSelected", viewModel.IsThreeSelected);
                             break;
                         case "IsFourSelected":
-                            connection.Send("recal.isFourSelected", viewModel.IsFourSelected);
+                            connection.Send("recall.isFourSelected", viewModel.IsFourSelected);
                             break;
                         case "IsFiveSelected":
-                            connection.Send("recal.isFiveSelected", viewModel.IsFiveSelected);
+                            connection.Send("recall.isFiveSelected", viewModel.IsFiveSelected);
                             break;
                         case "IsSixSelected":
-                            connection.Send("recal.isSixSelected", viewModel.IsSixSelected);
+                            connection.Send("recall.isSixSelected", viewModel.IsSixSelected);
                             break;
                         case "IsSevenSelected":
-                            connection.Send("recal.isSevenSelected", viewModel.IsSevenSelected);
+                            connection.Send("recall.isSevenSelected", viewModel.IsSevenSelected);
                             break;
                         case "IsEightSelected":
-                            connection.Send("recal.isEightSelected", viewModel.IsEightSelected);
+                            connection.Send("recall.isEightSelected", viewModel.IsEightSelected);
                             break;
                         case "IsNineSelected":
-                            connection.Send("recal.isNineSelected", viewModel.IsNineSelected);
+                            connection.Send("recall.isNineSelected", viewModel.IsNineSelected);
                             break;
                         case "IsTenSelected":
-                            connection.Send("recal.isTenSelected", viewModel.IsTenSelected);
+                            connection.Send("recall.isTenSelected", viewModel.IsTenSelected);
                             break;
                         case "IsJackSelected":
-                            connection.Send("recal.isJackSelected", viewModel.IsJackSelected);
+                            connection.Send("recall.isJackSelected", viewModel.IsJackSelected);
                             break;
                         case "IsQueenSelected":
-                            connection.Send("recal.isQueenSelected", viewModel.IsQueenSelected);
+                            connection.Send("recall.isQueenSelected", viewModel.IsQueenSelected);
                             break;
                         case "IsKingSelected":
-                            connection.Send("recal.isKingSelected", viewModel.IsKingSelected);
+                            connection.Send("recall.isKingSelected", viewModel.IsKingSelected);
                             break;
                         case "IsAceSelected":
-                            connection.Send("recal.isAceSelected", viewModel.IsAceSelected);
+                            connection.Send("recall.isAceSelected", viewModel.IsAceSelected);
                             break;
                     }
                 };
@@ -191,7 +191,7 @@ namespace MemorizeADeck.ElectronCgiConnect
             });
 
             connection.On("recall.selectFace", (Face face) =>
-            {
+            {                
                 if (viewModel.SelectFaceCommand.CanExecute(face))
                 {
                     viewModel.SelectFaceCommand.Execute(face);
@@ -217,7 +217,7 @@ namespace MemorizeADeck.ElectronCgiConnect
 
             var cardAssociationRepository = new CardAssociationRepository();
             SetupMemorizationPageViewModel(connection, cardAssociationRepository);
-            SetupRecallPageViewModel(connection);
+            SetupRecallPageViewModel(connection);            
 
             connection.OnAsync<IEnumerable<CardAssociationViewModel>>("cardAssociations.getAll", async () => {
                 return await cardAssociationRepository.GetAssociationsAsync();

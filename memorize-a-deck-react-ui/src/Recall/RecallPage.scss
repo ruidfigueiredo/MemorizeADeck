@@ -44,5 +44,9 @@
         &:hover {
             background: lighten($color: #20be3c, $amount: 20)
         }
+
+        &.selected {
+            background: white;;
+        }
     }
 }
