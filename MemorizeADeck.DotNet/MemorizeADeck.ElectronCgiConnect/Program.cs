@@ -128,7 +128,7 @@ namespace MemorizeADeck.ElectronCgiConnect
 
                 viewModel.HintConfirmationRequired += (e, args) =>
                 {
-                    connection.Send("recall.hintConfirmationRequired");
+                    connection.Send("recall.hintConfirmationRequired", true);
                 };
 
                 viewModel.RecallCompleted += memorizationTime =>
@@ -216,7 +216,7 @@ namespace MemorizeADeck.ElectronCgiConnect
                 return false;
             });
 
-            connection.On("recall.hasHintBeenConfirmed", (bool isHintConfirmed) =>
+            connection.On("recall.hintRequestConfirmation", (bool isHintConfirmed) =>
             {
                 viewModel.HasHintBeenConfirmed = isHintConfirmed;
             });

@@ -5,8 +5,9 @@ import { PlayingCardButton } from '../PlayingCardButton';
 import { Options } from '../Options';
 import { KeyboardShortcutsModal } from '../KeyboardShortcutsModal';
 import { CardWordLinksModal } from '../CardAssociations/CardWordLinksModal';
-import { suit, face, selectFace, selectSuit, recallEvents, start } from './recall.service';
+import { suit, face, selectFace, selectSuit, recallEvents, start, hint } from './recall.service';
 import { CardList } from '../CardList';
+import { HintRequestConfirmationModal } from './HintRequestConfirmationModal';
 
 export function RecallPage() {
     const [isInitialized, setIsInitialized] = useState(false)
@@ -31,6 +32,7 @@ export function RecallPage() {
     const [isAceSelected, setIsAceSelected] = useState(false);
 
     const [cardsRemembered, setCardsRemembered] = useState([]);
+    const [isHintConfirmationModalVisible, setIsHintConfirmationModalVisible] = useState(false);
 
     const location = useLocation();
 
@@ -56,6 +58,8 @@ export function RecallPage() {
         recallEvents.on('isAceSelected', setIsAceSelected);
 
         recallEvents.on('cardsRemembered', setCardsRemembered);
+        const handleHintConfirmationRequired = () => setIsHintConfirmationModalVisible(true);
+        recallEvents.on('hintConfirmationRequired', handleHintConfirmationRequired);
         return () => {
             recallEvents.off('isClubSelected', setIsClubSelected);
             recallEvents.off('isDiamondSelected', setIsDiamondSelected);
@@ -76,6 +80,7 @@ export function RecallPage() {
             recallEvents.off('isAceSelected', setIsAceSelected);    
 
             recallEvents.off('cardsRemembered', setCardsRemembered);
+            recallEvents.off('hintConfirmationRequired', handleHintConfirmationRequired);
         }
     }, [])
 
@@ -129,6 +134,9 @@ export function RecallPage() {
                     </div>
                 </div>
             </div>
+            <div className="hint-button" onClick={async () => await hint()}>
+                HINT                
+            </div>
             <Options>
                 <Options.Option onClick={_ => history.push('/')} icon="&#9664;" title="Main Menu" />
                 <Options.Option onClick={_ => setIsKeyboardShortcutsModalVisible(!isKeyboardShortcutsModalVisible)} icon="&#9000;" title="Keyboard Shortcuts" />
@@ -136,6 +144,7 @@ export function RecallPage() {
             </Options>
             <KeyboardShortcutsModal isOpen={isKeyboardShortcutsModalVisible} onClose={() => setIsKeyboardShortcutsModalVisible(false)} />
             <CardWordLinksModal isOpen={isCardWordLinksModalOpen} onClose={() => setIsCardWordLinksModalOpen(false)} />
+            <HintRequestConfirmationModal isOpen={isHintConfirmationModalVisible}/>
         </div>
     );
 }

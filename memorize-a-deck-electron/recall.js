@@ -44,6 +44,10 @@ exports.hint = () => {
     return connection.send('recall.hint');
 }
 
+exports.sendHintRequestConfirmation = isHintRequestConfirmed => {
+    return connection.send('recall.hintRequestConfirmation', isHintRequestConfirmed);
+}
+
 
 connection.on('recall.isClubSelected', isClubSelected => recallEvents.emit('isClubSelected', isClubSelected));
 connection.on('recall.isDiamondSelected', isDiamondSelected => recallEvents.emit('isDiamondSelected', isDiamondSelected));
@@ -64,3 +68,5 @@ connection.on('recall.isKingSelected', isKingSelected => recallEvents.emit('isKi
 connection.on('recall.isAceSelected', isAceSelected => recallEvents.emit('isAceSelected', isAceSelected));
 
 connection.on('recall.cardsRemembered', cardsRemembered => recallEvents.emit('cardsRemembered', cardsRemembered));
+
+connection.on('recall.hintConfirmationRequired', hintConfirmationRequired => recallEvents.emit('hintConfirmationRequired', hintConfirmationRequired));
