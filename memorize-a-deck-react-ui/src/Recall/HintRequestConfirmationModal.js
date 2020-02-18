@@ -1,11 +1,14 @@
-import React from 'react'
-import { Modal } from '../Modal'
+import React from 'react';
+import { Modal } from '../Modal';
+import './HintRequestConfirmationModal.scss';
 
-export function HintRequestConfirmationModal({ isOpen }) {
-    return (<Modal isOpen={isOpen}>
-        <h5>Are you sure?</h5>
-        <div>If you use hints your score will not be kept</div>
-        <button>Cancel</button>
-        <button>OK</button>
+export function HintRequestConfirmationModal({ isOpen, onConfirmation, onCancel}) {
+    return (<Modal isOpen={isOpen} className="hint-confirmation-modal" onClose={onCancel}>
+            <h3>Are you sure?</h3>
+            <div>If you use hints your score will not be kept</div>
+            <div className="footer">
+                <button className="positive" onClick={onConfirmation}>OK</button>
+                <button onClick={onCancel}>Cancel</button>
+            </div>
     </Modal>)
 }

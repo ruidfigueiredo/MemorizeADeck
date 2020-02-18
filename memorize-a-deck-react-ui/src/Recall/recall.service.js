@@ -22,7 +22,7 @@
  */
 
 
-export const { start, selectFace, selectSuit, recallEvents, hint } = window['recallService']
+export const { start, selectFace, selectSuit, recallEvents, hint, sendHintRequestConfirmation } = window['recallService']
 
 /**@type {Suit} */
 export const suit = window['recallService'].suit;

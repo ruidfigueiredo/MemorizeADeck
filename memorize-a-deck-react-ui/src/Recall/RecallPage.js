@@ -5,7 +5,7 @@ import { PlayingCardButton } from '../PlayingCardButton';
 import { Options } from '../Options';
 import { KeyboardShortcutsModal } from '../KeyboardShortcutsModal';
 import { CardWordLinksModal } from '../CardAssociations/CardWordLinksModal';
-import { suit, face, selectFace, selectSuit, recallEvents, start, hint } from './recall.service';
+import { suit, face, selectFace, selectSuit, recallEvents, start, hint, sendHintRequestConfirmation } from './recall.service';
 import { CardList } from '../CardList';
 import { HintRequestConfirmationModal } from './HintRequestConfirmationModal';
 
@@ -144,7 +144,13 @@ export function RecallPage() {
             </Options>
             <KeyboardShortcutsModal isOpen={isKeyboardShortcutsModalVisible} onClose={() => setIsKeyboardShortcutsModalVisible(false)} />
             <CardWordLinksModal isOpen={isCardWordLinksModalOpen} onClose={() => setIsCardWordLinksModalOpen(false)} />
-            <HintRequestConfirmationModal isOpen={isHintConfirmationModalVisible}/>
+            <HintRequestConfirmationModal isOpen={isHintConfirmationModalVisible} 
+                onConfirmation={async () => {                    
+                    await sendHintRequestConfirmation(true);
+                    await hint();
+                    setIsHintConfirmationModalVisible(false)
+                }}
+                onCancel={() => setIsHintConfirmationModalVisible(false)}/>
         </div>
     );
 }

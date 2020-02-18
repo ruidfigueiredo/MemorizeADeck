@@ -1,0 +1,28 @@
+.hint-confirmation-modal {
+    &.modal {
+        background: white;
+        min-width: 600px;
+        color: black;
+    }
+    .footer {
+        margin-top: 20px;
+        display: flex;
+        justify-content: flex-end;
+        button {
+            margin: 10px;
+        }
+    }
+    button {
+        border: 0;
+        padding: 5px 20px;
+        width: 100px;
+        color: black;
+        background-color: lightgray;  
+        outline: none;
+        cursor: pointer;      
+        &.positive {
+            color: white;
+            background-color: darkgreen;    
+        }
+    }
+}
