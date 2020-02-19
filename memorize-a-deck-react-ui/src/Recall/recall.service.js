@@ -2,7 +2,7 @@
  *  @property {number} diamond
  *  @property {number} heart
  *  @property {number} club
- *  @property {number} space
+ *  @property {number} spade
  */
 
 /** @typedef Face

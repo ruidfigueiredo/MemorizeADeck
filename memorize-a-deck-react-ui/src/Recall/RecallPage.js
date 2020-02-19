@@ -8,6 +8,7 @@ import { CardWordLinksModal } from '../CardAssociations/CardWordLinksModal';
 import { suit, face, selectFace, selectSuit, recallEvents, start, hint, sendHintRequestConfirmation } from './recall.service';
 import { CardList } from '../CardList';
 import { HintRequestConfirmationModal } from './HintRequestConfirmationModal';
+import { useScrollToBottomOnChange } from '../use-scroll-to-bottom-on-change';
 
 export function RecallPage() {
     const [isInitialized, setIsInitialized] = useState(false)
@@ -77,7 +78,7 @@ export function RecallPage() {
             recallEvents.off('isJackSelected', setIsJackSelected);
             recallEvents.off('isQueenSelected', setIsQueenSelected);
             recallEvents.off('isKingSelected', setIsKingSelected);
-            recallEvents.off('isAceSelected', setIsAceSelected);    
+            recallEvents.off('isAceSelected', setIsAceSelected);
 
             recallEvents.off('cardsRemembered', setCardsRemembered);
             recallEvents.off('hintConfirmationRequired', handleHintConfirmationRequired);
@@ -94,10 +95,78 @@ export function RecallPage() {
         });
     }, [location]);
 
+    useScrollToBottomOnChange(cardsRemembered, '.cards-recalled-container');
+
+    useEffect(() => {
+        const handleKeyDown = async e => {
+            switch (e.key.toLowerCase()) {
+                case 's':
+                    await selectSuit(suit.spade);
+                    break;
+                case 'd':
+                    await selectSuit(suit.diamond);
+                    break;
+                case 'c':
+                    await selectSuit(suit.club);
+                    break;
+                case 'h':
+                    await selectSuit(suit.heart);
+                    break;
+                case '1':
+                case 'a':
+                    await selectFace(face.ace);
+                    break;
+                case '2':
+                    await selectFace(face.two);
+                    break;
+                case '3':
+                    await selectFace(face.three);
+                    break;
+                case '4':
+                    await selectFace(face.four);
+                    break;
+                case '5':
+                    await selectFace(face.five);
+                    break;
+                case '6':
+                    await selectFace(face.six);
+                    break;
+                case '7':
+                    await selectFace(face.seven);
+                    break;
+                case '8':
+                    await selectFace(face.eight);
+                    break;
+                case '9':
+                    await selectFace(face.nine);
+                    break;
+                case '0':
+                    await selectFace(face.ten);
+                    break;
+                case 'j':
+                    await selectFace(face.jack);
+                    break;
+                case 'q':
+                    await selectFace(face.queen);
+                    break;
+                case 'k':
+                    await selectFace(face.king);
+                    break;
+                default:
+                    break;
+            }
+        }
+        document.body.addEventListener('keydown', handleKeyDown);
+        return () => {
+            document.body.removeEventListener('keydown', handleKeyDown);
+        }
+    }, [])
+
+
     return (
         <div className="recall-page">
             <div className="cards-recalled-container">
-                <CardList cards={cardsRemembered}/>
+                <CardList cards={cardsRemembered} />
             </div>
             <div className="controls">
                 <div className="suits-container">
@@ -114,28 +183,28 @@ export function RecallPage() {
                             <PlayingCardButton className={`${isTwoSelected ? 'selected' : ''}`} playingCardName="2" onClick={async () => await selectFace(face.two)} />
                             <PlayingCardButton className={`${isThreeSelected ? 'selected' : ''}`} playingCardName="3" onClick={async () => await selectFace(face.three)} />
                             <PlayingCardButton className={`${isFourSelected ? 'selected' : ''}`} playingCardName="4" onClick={async () => await selectFace(face.four)} />
-                            <PlayingCardButton className={`${isFiveSelected ? 'selected' : ''}`}playingCardName="5" onClick={async () => await selectFace(face.five)} />
+                            <PlayingCardButton className={`${isFiveSelected ? 'selected' : ''}`} playingCardName="5" onClick={async () => await selectFace(face.five)} />
                         </div>
                         <div>
-                            <PlayingCardButton className={`${ isSixSelected ? 'selected' : ''}`} playingCardName="6" onClick={async () => await selectFace(face.six)} />
-                            <PlayingCardButton className={`${ isSevenSelected ? 'selected' : ''}`} playingCardName="7" onClick={async () => await selectFace(face.seven)} />
-                            <PlayingCardButton className={`${ isEightSelected ? 'selected' : ''}`} playingCardName="8" onClick={async () => await selectFace(face.eight)} />
-                            <PlayingCardButton className={`${ isNineSelected ? 'selected' : ''}`} playingCardName="9" onClick={async () => await selectFace(face.nine)} />
+                            <PlayingCardButton className={`${isSixSelected ? 'selected' : ''}`} playingCardName="6" onClick={async () => await selectFace(face.six)} />
+                            <PlayingCardButton className={`${isSevenSelected ? 'selected' : ''}`} playingCardName="7" onClick={async () => await selectFace(face.seven)} />
+                            <PlayingCardButton className={`${isEightSelected ? 'selected' : ''}`} playingCardName="8" onClick={async () => await selectFace(face.eight)} />
+                            <PlayingCardButton className={`${isNineSelected ? 'selected' : ''}`} playingCardName="9" onClick={async () => await selectFace(face.nine)} />
                         </div>
                         <div>
-                            <PlayingCardButton className={`${ isTenSelected ? 'selected' : ''}`} playingCardName="10" onClick={async () => await selectFace(face.ten)} />
-                            <PlayingCardButton className={`${ isJackSelected ? 'selected' : ''}`} playingCardName="J" onClick={async () => await selectFace(face.jack)} />
-                            <PlayingCardButton className={`${ isQueenSelected ? 'selected' : ''}`} playingCardName="Q" onClick={async () => await selectFace(face.queen)} />
+                            <PlayingCardButton className={`${isTenSelected ? 'selected' : ''}`} playingCardName="10" onClick={async () => await selectFace(face.ten)} />
+                            <PlayingCardButton className={`${isJackSelected ? 'selected' : ''}`} playingCardName="J" onClick={async () => await selectFace(face.jack)} />
+                            <PlayingCardButton className={`${isQueenSelected ? 'selected' : ''}`} playingCardName="Q" onClick={async () => await selectFace(face.queen)} />
                         </div>
                         <div>
-                            <PlayingCardButton className={`${ isKingSelected ? 'selected' : ''}`} playingCardName="K" onClick={async () => await selectFace(face.king)} />
-                            <PlayingCardButton className={`${ isAceSelected ? 'selected' : ''}`} playingCardName="A" onClick={async () => await selectFace(face.ace)} />
+                            <PlayingCardButton className={`${isKingSelected ? 'selected' : ''}`} playingCardName="K" onClick={async () => await selectFace(face.king)} />
+                            <PlayingCardButton className={`${isAceSelected ? 'selected' : ''}`} playingCardName="A" onClick={async () => await selectFace(face.ace)} />
                         </div>
                     </div>
                 </div>
             </div>
             <div className="hint-button" onClick={async () => await hint()}>
-                HINT                
+                HINT
             </div>
             <Options>
                 <Options.Option onClick={_ => history.push('/')} icon="&#9664;" title="Main Menu" />
@@ -144,13 +213,13 @@ export function RecallPage() {
             </Options>
             <KeyboardShortcutsModal isOpen={isKeyboardShortcutsModalVisible} onClose={() => setIsKeyboardShortcutsModalVisible(false)} />
             <CardWordLinksModal isOpen={isCardWordLinksModalOpen} onClose={() => setIsCardWordLinksModalOpen(false)} />
-            <HintRequestConfirmationModal isOpen={isHintConfirmationModalVisible} 
-                onConfirmation={async () => {                    
+            <HintRequestConfirmationModal isOpen={isHintConfirmationModalVisible}
+                onConfirmation={async () => {
                     await sendHintRequestConfirmation(true);
                     await hint();
                     setIsHintConfirmationModalVisible(false)
                 }}
-                onCancel={() => setIsHintConfirmationModalVisible(false)}/>
+                onCancel={() => setIsHintConfirmationModalVisible(false)} />
         </div>
     );
 }

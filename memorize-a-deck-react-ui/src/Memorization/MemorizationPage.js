@@ -7,6 +7,7 @@ import { KeyboardShortcutsModal } from '../KeyboardShortcutsModal';
 import { CardWordLinksModal } from '../CardAssociations/CardWordLinksModal';
 import {Options} from '../Options'
 import { CardList } from '../CardList';
+import { useScrollToBottomOnChange } from '../use-scroll-to-bottom-on-change';
 
 export function MemorizationPage() {
     const [isInitialized, setIsInitialized] = useState(true);
@@ -76,11 +77,7 @@ export function MemorizationPage() {
         }
     }, [location.state]);
 
-    useEffect(() => {
-        const container = document.querySelector('.cards-seen-container');
-        container.scrollTop = container.scrollHeight;
-    }, [cardsSeen])
-
+    useScrollToBottomOnChange(cardsSeen, '.cards-seen-container');
 
     const handleTurnCard = useCallback(async function handleTurnCard() {
         if (!isInitialized) return;

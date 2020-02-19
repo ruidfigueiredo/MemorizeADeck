@@ -3,7 +3,8 @@
     flex-direction: column;
     height: 100%;
     .cards-recalled-container {
-        flex: 1;        
+        flex: 1;
+        overflow: auto;        
     }
     .controls {        
         flex-basis: 400px;        
