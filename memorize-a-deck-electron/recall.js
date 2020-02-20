@@ -70,3 +70,5 @@ connection.on('recall.isAceSelected', isAceSelected => recallEvents.emit('isAceS
 connection.on('recall.cardsRemembered', cardsRemembered => recallEvents.emit('cardsRemembered', cardsRemembered));
 
 connection.on('recall.hintConfirmationRequired', hintConfirmationRequired => recallEvents.emit('hintConfirmationRequired', hintConfirmationRequired));
+
+connection.on('recall.completed', timeSpan => recallEvents.emit('completed', timeSpan));
