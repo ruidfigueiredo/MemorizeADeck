@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Blinkingcaret.Cards;
 using Blinkingcaret.MemorizeADeck.ViewModels;
 using Blinkingcaret.MemorizeADeck.ViewModels.CardAssociations;
+using Blinkingcaret.MemorizeADeck.ViewModels.Highscores;
 using ElectronCgi.DotNet;
 
 namespace MemorizeADeck.ElectronCgiConnect
@@ -243,6 +244,12 @@ namespace MemorizeADeck.ElectronCgiConnect
             {
                 return await cardAssociationRepository.GetAssociationsAsync();
             });
+
+            var highscoreTable = new HighscoreTable();
+            connection.OnAsync<Highscore>("highscores.save", async highscore => 
+             await highscoreTable.SaveHighScoreAsync(highscore.NumberOfCards, highscore.MemorizationTime));
+             
+            connection.OnAsync("highscores.getAll", async () => await highscoreTable.GetHighscoresAsync());
 
             connection.Listen();
 

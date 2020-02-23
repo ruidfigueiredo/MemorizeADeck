@@ -9,6 +9,7 @@ import { suit, face, selectFace, selectSuit, recallEvents, start, hint, sendHint
 import { CardList } from '../CardList';
 import { HintRequestConfirmationModal } from './HintRequestConfirmationModal';
 import { useScrollToBottomOnChange } from '../use-scroll-to-bottom-on-change';
+import { saveHighscore } from '../highscore.service';
 
 export function RecallPage() {
     const [isInitialized, setIsInitialized] = useState(false)
@@ -34,31 +35,13 @@ export function RecallPage() {
 
     const [cardsRemembered, setCardsRemembered] = useState([]);
     const [isHintConfirmationModalVisible, setIsHintConfirmationModalVisible] = useState(false);
+    const [wereHintsUsed, setWereHintsUsed] = useState(false);
 
     const location = useLocation();
 
     const history = useHistory();
 
     useEffect(() => {
-        const handleRecallComplete = timespan => {
-            const timespanRegex = /^(?<hours>\d{2})\:(?<minutes>\d{2})\:(?<seconds>\d{2})\.(?<milliseconds>\d+)$/; //if you are looking and this and thinking: WTF? it's late and this was the first thing I coult think of when I realised that javascript doen't have a native way to represent durations in time
-            const timespanMatch = timespan.match(timespanRegex)
-            if (timespanMatch === null) {
-                alert('Could not parse timespan from dotnet: ' + timespan);
-                return;
-            }
-
-            const recallDuration = {
-                hours: timespanMatch.groups.hours,
-                minutes: timespanMatch.groups.minutes,
-                seconds: timespanMatch.groups.seconds,
-                milliseconds: timespanMatch.groups.milliseconds
-            };
-
-            console.log(recallDuration);
-        };
-        recallEvents.on('completed', handleRecallComplete);
-
         recallEvents.on('isClubSelected', setIsClubSelected);
         recallEvents.on('isDiamondSelected', setIsDiamondSelected);
         recallEvents.on('isHeartSelected', setIsHeartSelected);
@@ -81,7 +64,6 @@ export function RecallPage() {
         const handleHintConfirmationRequired = () => setIsHintConfirmationModalVisible(true);
         recallEvents.on('hintConfirmationRequired', handleHintConfirmationRequired);
         return () => {
-            recallEvents.off('complete', handleRecallComplete);
             recallEvents.off('isClubSelected', setIsClubSelected);
             recallEvents.off('isDiamondSelected', setIsDiamondSelected);
             recallEvents.off('isHeartSelected', setIsHeartSelected);
@@ -106,6 +88,43 @@ export function RecallPage() {
     }, [])
 
     useEffect(() => {
+        const handleRecallComplete = async timespan => {
+            const timespanRegex = /^(?<hours>\d{2}):(?<minutes>\d{2}):(?<seconds>\d{2})\.(?<milliseconds>\d+)$/; //if you are looking and this and thinking: WTF? it's late and this was the first thing I coult think of when I realised that javascript doen't have a native way to represent durations in time
+            const timespanMatch = timespan.match(timespanRegex)
+            if (timespanMatch === null) {
+                alert('Could not parse timespan from dotnet: ' + timespan);
+                return;
+            }
+
+            const recallDuration = {
+                hours: timespanMatch.groups.hours,
+                minutes: timespanMatch.groups.minutes,
+                seconds: timespanMatch.groups.seconds,
+                milliseconds: timespanMatch.groups.milliseconds
+            };
+
+            let message = `Congratulations, you've memorized ${recallDuration.Hours !== '00' ? `${recallDuration.hours}:` : ''}${cardsRemembered.length} cards in ${recallDuration.minutes}:${recallDuration.seconds}.`
+            if (wereHintsUsed) {
+                message += "\nYou've used hints so your score will not be kept.\nPractice makes perfection, maybe next time you won't need them.";
+            }
+
+            console.log(message);
+
+            if (!wereHintsUsed) {
+                try {
+                    await saveHighscore(cardsRemembered.length, timespan);
+                } catch (error) {
+                    alert(error);
+                }
+            }
+        };
+        recallEvents.on('completed', handleRecallComplete);
+        return () => {
+            recallEvents.off('completed', handleRecallComplete);
+        }
+    }, [cardsRemembered, wereHintsUsed])
+
+    useEffect(() => {
         const { cardsMemorized, memorizationTime } = location.state || {
             "cardsMemorized": [{ "suit": 1, "face": 5 }, { "suit": 1, "face": 9 }, { "suit": 1, "face": 8 }, { "suit": 1, "face": 4 }, { "suit": 1, "face": 1 }, { "suit": 1, "face": 2 }, { "suit": 1, "face": 11 }, { "suit": 1, "face": 6 }, { "suit": 1, "face": 0 }, { "suit": 1, "face": 12 }, { "suit": 1, "face": 7 }, { "suit": 1, "face": 3 }, { "suit": 1, "face": 10 }],
             "memorizationTime": "00:00:06.3177712"
@@ -117,15 +136,6 @@ export function RecallPage() {
 
     useScrollToBottomOnChange(cardsRemembered, '.cards-recalled-container');
 
-    async function performSelectSuit(suit) {
-        if (!isInitialized) return;
-        await selectSuit(suit);
-    }
-
-    async function performSelectFace(face) {
-        if (!isInitialized) return;
-        await selectFace(face);
-    }
 
     async function requestHint() {
         if (!isInitialized) return;
@@ -136,56 +146,56 @@ export function RecallPage() {
         const handleKeyDown = async e => {
             switch (e.key.toLowerCase()) {
                 case 's':
-                    await performSelectSuit(suit.spade);
+                    await selectSuit(suit.spade);
                     break;
                 case 'd':
-                    await performSelectSuit(suit.diamond);
+                    await selectSuit(suit.diamond);
                     break;
                 case 'c':
-                    await performSelectSuit(suit.club);
+                    await selectSuit(suit.club);
                     break;
                 case 'h':
-                    await performSelectSuit(suit.heart);
+                    await selectSuit(suit.heart);
                     break;
                 case '1':
                 case 'a':
-                    await performSelectFace(face.ace);
+                    await selectFace(face.ace);
                     break;
                 case '2':
-                    await performSelectFace(face.two);
+                    await selectFace(face.two);
                     break;
                 case '3':
-                    await performSelectFace(face.three);
+                    await selectFace(face.three);
                     break;
                 case '4':
-                    await performSelectFace(face.four);
+                    await selectFace(face.four);
                     break;
                 case '5':
-                    await performSelectFace(face.five);
+                    await selectFace(face.five);
                     break;
                 case '6':
-                    await performSelectFace(face.six);
+                    await selectFace(face.six);
                     break;
                 case '7':
-                    await performSelectFace(face.seven);
+                    await selectFace(face.seven);
                     break;
                 case '8':
-                    await performSelectFace(face.eight);
+                    await selectFace(face.eight);
                     break;
                 case '9':
-                    await performSelectFace(face.nine);
+                    await selectFace(face.nine);
                     break;
                 case '0':
-                    await performSelectFace(face.ten);
+                    await selectFace(face.ten);
                     break;
                 case 'j':
-                    await performSelectFace(face.jack);
+                    await selectFace(face.jack);
                     break;
                 case 'q':
-                    await performSelectFace(face.queen);
+                    await selectFace(face.queen);
                     break;
                 case 'k':
-                    await performSelectFace(face.king);
+                    await selectFace(face.king);
                     break;
                 default:
                     break;
@@ -195,8 +205,9 @@ export function RecallPage() {
         return () => {
             document.body.removeEventListener('keydown', handleKeyDown);
         }
-    }, [performSelectSuit, performSelectFace])
+    }, [selectSuit, selectFace])
 
+    if (!isInitialized) return null;
 
     return (
         <div className="recall-page">
@@ -206,34 +217,34 @@ export function RecallPage() {
             <div className="controls">
                 <div className="suits-container">
                     <div>
-                        <PlayingCardButton className={`${isClubSelected ? 'selected' : ''}`} playingCardName="Club" onClick={async () => await performSelectSuit(suit.club)} />
-                        <PlayingCardButton className={`${isDiamondSelected ? 'selected' : ''}`} playingCardName="Diamond" onClick={async () => await performSelectSuit(suit.diamond)} />
-                        <PlayingCardButton className={`${isHeartSelected ? 'selected' : ''}`} playingCardName="Heart" onClick={async () => await performSelectSuit(suit.heart)} />
-                        <PlayingCardButton className={`${isSpadeSelected ? 'selected' : ''}`} playingCardName="Spade" onClick={async () => await performSelectSuit(suit.spade)} />
+                        <PlayingCardButton className={`${isClubSelected ? 'selected' : ''}`} playingCardName="Club" onClick={async () => await selectSuit(suit.club)} />
+                        <PlayingCardButton className={`${isDiamondSelected ? 'selected' : ''}`} playingCardName="Diamond" onClick={async () => await selectSuit(suit.diamond)} />
+                        <PlayingCardButton className={`${isHeartSelected ? 'selected' : ''}`} playingCardName="Heart" onClick={async () => await selectSuit(suit.heart)} />
+                        <PlayingCardButton className={`${isSpadeSelected ? 'selected' : ''}`} playingCardName="Spade" onClick={async () => await selectSuit(suit.spade)} />
                     </div>
                 </div>
                 <div className="faces-container">
                     <div>
                         <div>
-                            <PlayingCardButton className={`${isTwoSelected ? 'selected' : ''}`} playingCardName="2" onClick={async () => await performSelectFace(face.two)} />
-                            <PlayingCardButton className={`${isThreeSelected ? 'selected' : ''}`} playingCardName="3" onClick={async () => await performSelectFace(face.three)} />
-                            <PlayingCardButton className={`${isFourSelected ? 'selected' : ''}`} playingCardName="4" onClick={async () => await performSelectFace(face.four)} />
-                            <PlayingCardButton className={`${isFiveSelected ? 'selected' : ''}`} playingCardName="5" onClick={async () => await performSelectFace(face.five)} />
+                            <PlayingCardButton className={`${isTwoSelected ? 'selected' : ''}`} playingCardName="2" onClick={async () => await selectFace(face.two)} />
+                            <PlayingCardButton className={`${isThreeSelected ? 'selected' : ''}`} playingCardName="3" onClick={async () => await selectFace(face.three)} />
+                            <PlayingCardButton className={`${isFourSelected ? 'selected' : ''}`} playingCardName="4" onClick={async () => await selectFace(face.four)} />
+                            <PlayingCardButton className={`${isFiveSelected ? 'selected' : ''}`} playingCardName="5" onClick={async () => await selectFace(face.five)} />
                         </div>
                         <div>
-                            <PlayingCardButton className={`${isSixSelected ? 'selected' : ''}`} playingCardName="6" onClick={async () => await performSelectFace(face.six)} />
-                            <PlayingCardButton className={`${isSevenSelected ? 'selected' : ''}`} playingCardName="7" onClick={async () => await performSelectFace(face.seven)} />
-                            <PlayingCardButton className={`${isEightSelected ? 'selected' : ''}`} playingCardName="8" onClick={async () => await performSelectFace(face.eight)} />
-                            <PlayingCardButton className={`${isNineSelected ? 'selected' : ''}`} playingCardName="9" onClick={async () => await performSelectFace(face.nine)} />
+                            <PlayingCardButton className={`${isSixSelected ? 'selected' : ''}`} playingCardName="6" onClick={async () => await selectFace(face.six)} />
+                            <PlayingCardButton className={`${isSevenSelected ? 'selected' : ''}`} playingCardName="7" onClick={async () => await selectFace(face.seven)} />
+                            <PlayingCardButton className={`${isEightSelected ? 'selected' : ''}`} playingCardName="8" onClick={async () => await selectFace(face.eight)} />
+                            <PlayingCardButton className={`${isNineSelected ? 'selected' : ''}`} playingCardName="9" onClick={async () => await selectFace(face.nine)} />
                         </div>
                         <div>
-                            <PlayingCardButton className={`${isTenSelected ? 'selected' : ''}`} playingCardName="10" onClick={async () => await performSelectFace(face.ten)} />
-                            <PlayingCardButton className={`${isJackSelected ? 'selected' : ''}`} playingCardName="J" onClick={async () => await performSelectFace(face.jack)} />
-                            <PlayingCardButton className={`${isQueenSelected ? 'selected' : ''}`} playingCardName="Q" onClick={async () => await performSelectFace(face.queen)} />
+                            <PlayingCardButton className={`${isTenSelected ? 'selected' : ''}`} playingCardName="10" onClick={async () => await selectFace(face.ten)} />
+                            <PlayingCardButton className={`${isJackSelected ? 'selected' : ''}`} playingCardName="J" onClick={async () => await selectFace(face.jack)} />
+                            <PlayingCardButton className={`${isQueenSelected ? 'selected' : ''}`} playingCardName="Q" onClick={async () => await selectFace(face.queen)} />
                         </div>
                         <div>
-                            <PlayingCardButton className={`${isKingSelected ? 'selected' : ''}`} playingCardName="K" onClick={async () => await performSelectFace(face.king)} />
-                            <PlayingCardButton className={`${isAceSelected ? 'selected' : ''}`} playingCardName="A" onClick={async () => await performSelectFace(face.ace)} />
+                            <PlayingCardButton className={`${isKingSelected ? 'selected' : ''}`} playingCardName="K" onClick={async () => await selectFace(face.king)} />
+                            <PlayingCardButton className={`${isAceSelected ? 'selected' : ''}`} playingCardName="A" onClick={async () => await selectFace(face.ace)} />
                         </div>
                     </div>
                 </div>
@@ -250,6 +261,7 @@ export function RecallPage() {
             <CardWordLinksModal isOpen={isCardWordLinksModalOpen} onClose={() => setIsCardWordLinksModalOpen(false)} />
             <HintRequestConfirmationModal isOpen={isHintConfirmationModalVisible}
                 onConfirmation={async () => {
+                    setWereHintsUsed(true);
                     await sendHintRequestConfirmation(true);
                     await requestHint();
                     setIsHintConfirmationModalVisible(false)
