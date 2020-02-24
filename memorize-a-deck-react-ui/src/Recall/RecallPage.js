@@ -10,6 +10,7 @@ import { CardList } from '../CardList';
 import { HintRequestConfirmationModal } from './HintRequestConfirmationModal';
 import { useScrollToBottomOnChange } from '../use-scroll-to-bottom-on-change';
 import { saveHighscore } from '../highscore.service';
+import { MemorizationCompleteModal } from './MemorizationCompleteModal';
 
 export function RecallPage() {
     const [isInitialized, setIsInitialized] = useState(false)
@@ -36,6 +37,7 @@ export function RecallPage() {
     const [cardsRemembered, setCardsRemembered] = useState([]);
     const [isHintConfirmationModalVisible, setIsHintConfirmationModalVisible] = useState(false);
     const [wereHintsUsed, setWereHintsUsed] = useState(false);
+    const [recallTimespan, setRecallTimespan] = useState(null);
 
     const location = useLocation();
 
@@ -89,35 +91,9 @@ export function RecallPage() {
 
     useEffect(() => {
         const handleRecallComplete = async timespan => {
-            const timespanRegex = /^(?<hours>\d{2}):(?<minutes>\d{2}):(?<seconds>\d{2})\.(?<milliseconds>\d+)$/; //if you are looking and this and thinking: WTF? it's late and this was the first thing I coult think of when I realised that javascript doen't have a native way to represent durations in time
-            const timespanMatch = timespan.match(timespanRegex)
-            if (timespanMatch === null) {
-                alert('Could not parse timespan from dotnet: ' + timespan);
-                return;
-            }
-
-            const recallDuration = {
-                hours: timespanMatch.groups.hours,
-                minutes: timespanMatch.groups.minutes,
-                seconds: timespanMatch.groups.seconds,
-                milliseconds: timespanMatch.groups.milliseconds
-            };
-
-            let message = `Congratulations, you've memorized ${recallDuration.Hours !== '00' ? `${recallDuration.hours}:` : ''}${cardsRemembered.length} cards in ${recallDuration.minutes}:${recallDuration.seconds}.`
-            if (wereHintsUsed) {
-                message += "\nYou've used hints so your score will not be kept.\nPractice makes perfection, maybe next time you won't need them.";
-            }
-
-            console.log(message);
-
-            if (!wereHintsUsed) {
-                try {
-                    await saveHighscore(cardsRemembered.length, timespan);
-                } catch (error) {
-                    alert(error);
-                }
-            }
+            setRecallTimespan(timespan);
         };
+
         recallEvents.on('completed', handleRecallComplete);
         return () => {
             recallEvents.off('completed', handleRecallComplete);
@@ -205,7 +181,7 @@ export function RecallPage() {
         return () => {
             document.body.removeEventListener('keydown', handleKeyDown);
         }
-    }, [selectSuit, selectFace])
+    }, [])
 
     if (!isInitialized) return null;
 
@@ -267,6 +243,18 @@ export function RecallPage() {
                     setIsHintConfirmationModalVisible(false)
                 }}
                 onCancel={() => setIsHintConfirmationModalVisible(false)} />
+            <MemorizationCompleteModal isOpen={recallTimespan !== null} wereHintsUsed={wereHintsUsed} timespan={recallTimespan} count={cardsRemembered.length} onOk={async () => {
+                if (!wereHintsUsed) {
+                    try {
+                        await saveHighscore(cardsRemembered.length, recallTimespan);
+                        history.push({pathname: '/highscores', state: {count: cardsRemembered.length, timespan: recallTimespan}});
+                    } catch (error) {
+                        alert(error);
+                    }
+                } else {
+                    history.push('/highscores');
+                }
+            }} />
         </div>
     );
 }
