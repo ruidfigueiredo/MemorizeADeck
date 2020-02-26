@@ -1,25 +1,15 @@
 import React from 'react';
 import './MemorizationCompleteModal.scss';
 import { Modal } from '../Modal';
+import { getRecallDuration } from './recall.service';
 
 
 export function MemorizationCompleteModal({ isOpen, wereHintsUsed, count, timespan, onOk}) {
     if (!timespan) return null;
 
-    const timespanRegex = /^(?<hours>\d{2}):(?<minutes>\d{2}):(?<seconds>\d{2})\.(?<milliseconds>\d+)$/; //if you are looking and this and thinking: WTF? it's late and this was the first thing I coult think of when I realised that javascript doen't have a native way to represent durations in time
-    const timespanMatch = timespan.match(timespanRegex)
-    if (timespanMatch === null) {
-        alert('Could not parse timespan from dotnet: ' + timespan);
-        return;
-    }
-    const recallDuration = {
-        hours: timespanMatch.groups.hours,
-        minutes: timespanMatch.groups.minutes,
-        seconds: timespanMatch.groups.seconds,
-        milliseconds: timespanMatch.groups.milliseconds,        
-    }
+    const recallDuration = getRecallDuration(timespan);
 
-    let message = `Congratulations, you've memorized ${count} cards in ${recallDuration.hours !== '00' ? `${recallDuration.hours}:` : ''}${recallDuration.minutes}:${recallDuration.seconds}.`
+    let message = `Congratulations, you've memorized ${count} cards in ${recallDuration.hours !== 0 ? `${String(recallDuration.hours).padStart(2, "0")}:` : ''}${String(recallDuration.minutes).padStart(2, "0")}:${String(recallDuration.seconds).padStart(2, "0")}.`
     if (wereHintsUsed) {
         message += "\nYou've used hints so your score will not be kept.\nPractice makes perfection, maybe next time you won't need them.";
     }

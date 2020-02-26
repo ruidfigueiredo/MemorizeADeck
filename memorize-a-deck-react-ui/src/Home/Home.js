@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Home.scss'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 import { SuitSelectorModal } from './SuitSelectorModal';
 
 export function HomePage() {
@@ -25,7 +25,7 @@ export function HomePage() {
         <div className="home">
             <div onClick={() => setIsSuitsSelectorOpen(true)}>Start</div>
             <div>Instructions</div>
-            <div>Highscores</div>
+            <Link to="/highscores">Highscores</Link>
             <div>Edit Card-Word Links</div>
             <div>Feedback/Support/Feature Request</div>
         </div>
