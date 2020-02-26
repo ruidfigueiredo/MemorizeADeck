@@ -24,7 +24,7 @@ export function HomePage() {
     return (<>
         <div className="home">
             <div onClick={() => setIsSuitsSelectorOpen(true)}>Start</div>
-            <div>Instructions</div>
+            <Link to="/instructions">Instructions</Link>
             <Link to="/highscores">Highscores</Link>
             <div>Edit Card-Word Links</div>
             <div>Feedback/Support/Feature Request</div>

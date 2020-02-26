@@ -13,8 +13,7 @@ export function HighscoresPage() {
 
     const location = useLocation();
     const history = useHistory()
-    const {count, timespan} = location.state || {};
-    console.log("STATE: ", location.state);
+    const {count, timespan} = location.state || {};    
 
     return (
         <div className="highscores-page">
