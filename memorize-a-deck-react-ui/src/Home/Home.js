@@ -26,7 +26,7 @@ export function HomePage() {
             <div onClick={() => setIsSuitsSelectorOpen(true)}>Start</div>
             <Link to="/instructions">Instructions</Link>
             <Link to="/highscores">Highscores</Link>
-            <div>Edit Card-Word Links</div>
+            <Link to="/edit-card-word-links">Edit Card Word Links</Link>
             <div>Feedback/Support/Feature Request</div>
         </div>
         <SuitSelectorModal isOpen={isSuitSelectorOpen} onSuitsSelected={handleSuitsSelected} onClose={() => setIsSuitsSelectorOpen(false)} />

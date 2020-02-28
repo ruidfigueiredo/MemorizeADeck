@@ -6,6 +6,7 @@ import { MemorizationPage } from './Memorization/MemorizationPage';
 import { RecallPage } from './Recall/RecallPage';
 import {HighscoresPage} from './Highscores/HighscoresPage'
 import { InstructionsPage } from './Instructions/InstructionsPage';
+import { EditCardWordLinksPage } from './EditCardWordLinks/EditCardWordLinksPage';
 
 function App() {
   return (    
@@ -16,7 +17,7 @@ function App() {
         <Route path="/memorization" component={MemorizationPage}/>
         <Route path="/recall" component={RecallPage}/>
         <Route path="/highscores" component={HighscoresPage}/>
-        <Route path="/edit-card-word-links">Edit Card Word Links</Route>
+        <Route path="/edit-card-word-links" component={EditCardWordLinksPage}/>
       </BrowserRouter>
     </div>
   );

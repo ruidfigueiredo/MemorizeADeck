@@ -1,0 +1,36 @@
+.edit-card-word-links {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    box-sizing: border-box;
+    h1 {
+        margin: 0;
+    }
+
+    .card-associations-container {
+        flex: 1;
+        padding: 0px 20px;
+        overflow: auto;
+        .card-association {
+            display: inline-block;     
+            margin: 10px 30px;       
+            text-align: center;
+            input {
+                margin-top: 10px;
+                margin-bottom: 20px;
+                width: 120px;
+                border: 0;
+                padding: 5px;
+                background: #cce8cc;
+                &:focus {
+                    outline: #92ad92 solid;
+                }                
+            }
+        }
+    }
+    
+    .actions-container {
+        height: 60px;
+    }
+}

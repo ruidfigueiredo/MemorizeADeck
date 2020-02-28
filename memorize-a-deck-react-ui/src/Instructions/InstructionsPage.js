@@ -1,7 +1,6 @@
 import React from 'react';
 import './InstructionsPage.scss'
 import { useHistory } from 'react-router-dom';
-import { CardList } from '../CardList';
 
 export function InstructionsPage() {
     const history = useHistory();
