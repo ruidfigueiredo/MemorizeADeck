@@ -1,1 +1,1 @@
-export const { getCardAssociations } = window["cardAssociationsService"];
+export const { getCardAssociations, saveCardAssociations } = window["cardAssociationsService"];

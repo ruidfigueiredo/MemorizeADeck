@@ -245,6 +245,12 @@ namespace MemorizeADeck.ElectronCgiConnect
                 return await cardAssociationRepository.GetAssociationsAsync();
             });
 
+            connection.OnAsync<IEnumerable<CardAssociationViewModel>>("cardAssociations.save", async (newAssociations) =>
+            {
+                await cardAssociationRepository.SaveAssociationsAsync(newAssociations);
+            });
+
+
             var highscoreTable = new HighscoreTable();
             connection.OnAsync<Highscore>("highscores.save", async highscore => 
              await highscoreTable.SaveHighScoreAsync(highscore.NumberOfCards, highscore.MemorizationTime));

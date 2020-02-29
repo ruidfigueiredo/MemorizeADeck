@@ -32,5 +32,18 @@
     
     .actions-container {
         height: 60px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .button {
+        display: inline-block;
+        color: white;
+        border: 1px solid white;
+        margin: 10px;
+        padding: 10px;
+        cursor: pointer; 
+        min-width: 120px; 
+        text-align: center;
     }
 }

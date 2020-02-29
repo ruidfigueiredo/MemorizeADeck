@@ -88,11 +88,7 @@ namespace MemorizeADeck.ElectronCgiConnect
             _cardAssociations = null;
             IEnumerable<CardAssociation> storageAssociations = ConvertViewModelAssociationsToStorageAssociations(associations);
             var storageAssociationsJson = SerializeAssociations(storageAssociations.ToList());
-            using (var writer = File.OpenWrite(CustomAssociationsFileName))
-            {
-                var encodedJson = Encoding.Unicode.GetBytes(storageAssociationsJson);
-                await writer.WriteAsync(encodedJson, 0, encodedJson.Length);
-            }
+            await File.WriteAllTextAsync(CustomAssociationsFileName, storageAssociationsJson);
         }
 
         private string SerializeAssociations(List<CardAssociation> associations)
