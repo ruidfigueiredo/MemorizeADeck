@@ -56,7 +56,7 @@ export function InstructionsPage() {
 
 function CardAndShortName({ cardPath, shortName }) {
     return <div>
-        <div><img src={`/PlayingCards/${cardPath}.png`} alt={cardPath} width="70px" /></div>
+        <div><img src={`./PlayingCards/${cardPath}.png`} alt={cardPath} width="70px" /></div>
         <div>{shortName}</div>
     </div>
 }

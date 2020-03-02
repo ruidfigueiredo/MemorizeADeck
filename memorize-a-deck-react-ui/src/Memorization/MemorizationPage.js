@@ -132,7 +132,7 @@ export function MemorizationPage() {
 
 function TurnedDeck({ cardCount = 52, onClick }) {
     return (<div className="turned-deck" onClick={onClick}>
-        {Array(cardCount).fill(null).map((_, index) => <img key={index} src="/PlayingCards/BlueBack.png" width="150px" style={{ position: 'absolute', top: `-${Math.round(index / 2.0)}px`, right: `${Math.round((index + 1) / 2.0)}.px` }} alt="turned card" />)}
+        {Array(cardCount).fill(null).map((_, index) => <img key={index} src="./PlayingCards/BlueBack.png" width="150px" style={{ position: 'absolute', top: `-${Math.round(index / 2.0)}px`, right: `${Math.round((index + 1) / 2.0)}.px` }} alt="turned card" />)}
     </div>)
 }
 
