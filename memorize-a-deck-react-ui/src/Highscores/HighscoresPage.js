@@ -13,19 +13,21 @@ export function HighscoresPage() {
 
     const location = useLocation();
     const history = useHistory()
-    const {count, timespan} = location.state || {};    
+    const { count, timespan } = location.state || {};
 
     return (
         <div className="highscores-page">
-            {highscores.sort((highscore1, highscore2) => highscore1.numberOfCards === highscore2.numberOfCards ? (highscore1.memorizationTime < highscore2.memorizationTime ? -1 : 1) : highscore1.numberOfCards > highscore2.numberOfCards ? -1 : 1).map((highscore, index) => (
-                <div key={index}>
-                    <Highscore index={index}
-                        memorizationTime={highscore.memorizationTime}
-                        numberOfCards={highscore.numberOfCards}
-                        isHighlighted={count === highscore.numberOfCards && timespan === highscore.memorizationTime}
-                    />
-                </div>
-            ))}
+            <div className="highscores-container">
+                {highscores.sort((highscore1, highscore2) => highscore1.numberOfCards === highscore2.numberOfCards ? (highscore1.memorizationTime < highscore2.memorizationTime ? -1 : 1) : highscore1.numberOfCards > highscore2.numberOfCards ? -1 : 1).map((highscore, index) => (
+                    <div key={index}>
+                        <Highscore index={index}
+                            memorizationTime={highscore.memorizationTime}
+                            numberOfCards={highscore.numberOfCards}
+                            isHighlighted={count === highscore.numberOfCards && timespan === highscore.memorizationTime}
+                        />
+                    </div>
+                ))}
+            </div>
             <div className="bottom-button" onClick={() => history.push('/')}>Main Menu</div>
         </div>
     );

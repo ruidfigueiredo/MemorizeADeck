@@ -1,4 +1,6 @@
 .home {
+    position:relative;
+    z-index: 1;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -16,4 +18,30 @@
         text-decoration: none;
         color: white;
     }
+}
+
+@keyframes roam-horizontal {
+    from {
+        left: 0;    
+    }
+    to {
+       left: calc(100% - 100px);       
+    }
+}
+
+@keyframes roam-vertical {
+    from {
+        top: 0;        
+    }
+    to {
+       top: calc(100% - 145px);       
+    }
+}
+
+
+.random-card-container {
+    position: absolute;    
+    animation: roam-horizontal 7.71s linear, roam-vertical 6.51s linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
 }

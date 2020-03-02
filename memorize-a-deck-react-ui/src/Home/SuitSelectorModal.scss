@@ -1,4 +1,6 @@
 .suit-selector-modal {
+    position: relative;
+    z-index: 2;
     text-align: center;
     button {
         border: 1px solid white;

@@ -17,10 +17,10 @@ export function InstructionsPage() {
                 <CardAndShortName cardPath="Clubs/10C" shortName="C10" />
                 <CardAndShortName cardPath="Clubs/6C" shortName="C6" />
             </div>
-            <p>                    If C2 &#x2194; <em>Can</em>, HA &#x2194; <em>Hat</em>, C10 &#2193; <em>Case</em> and C6 &#2193; <em>Cash</em> you could imagine the following story in your mind:
+            <p>If C2 &#x2194; <em>Can</em>, HA &#x2194; <em>Hat</em>, C10 &#x2194; <em>Case</em> and C6 &#x2194; <em>Cash</em> you could imagine the following story in your mind:
             </p>
             <p>
-                "You find a can (C2), with a hat inside (HA). You look into that had and find a small case inside (C10). You open it and it's full of cash (C6)".
+                "You find a can (C2), with a hat inside (HA). You look into that hat and find a small case inside (C10). You open it and it's full of cash (C6)".
             </p>
             <p>
                 This is easier to remember, and it also opens other possibilities in terms of recall that are almost impossible to achieve if you just try to memorize the cards.
