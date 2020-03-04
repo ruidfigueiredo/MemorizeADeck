@@ -121,7 +121,7 @@ export function RecallPage() {
     useEffect(() => {
         const handleKeyDown = async e => {
             switch (e.key.toLowerCase()) {
-                case 's':
+                case 's':                    
                     await selectSuit(suit.spade);
                     break;
                 case 'd':

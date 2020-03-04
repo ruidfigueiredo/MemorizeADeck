@@ -1,12 +1,10 @@
-/**@type {(numberOfCards: number, memorizationTime: string) => Promise} */
-export const saveHighscore = window['highscoresService'].saveHighscore;
+import {connection} from './connection.service';
 
 
-/** 
- * @typedef Highscore 
- * @property {number} numberOfCards
- * @property {string} memorizationTime
- */
+export function saveHighscore(numberOfCards, memorizationTime) {
+    return connection.send('highscores.save', {numberOfCards, memorizationTime});
+};
 
-/** @type {() => Highscore[]} */
-export const getHighscores = window['highscoresService'].getHighscores;
+export function getHighscores() {
+    return connection.send('highscores.getAll');
+}

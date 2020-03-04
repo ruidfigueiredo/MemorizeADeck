@@ -84,7 +84,7 @@ export function MemorizationPage() {
         await turnCard()
     }, [isInitialized]);
 
-    useEffect(() => {
+    useEffect(() => {                
         const handleKeydown = async e => {
             if (e.key === 't' || e.key === 'T' || e.key === 'Enter') {
                 await handleTurnCard();

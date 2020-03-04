@@ -11,8 +11,7 @@ export function EditCardWordLinksPage() {
     }, []);
     const history = useHistory();
 
-    function updateAssociation(playingCard, newAssociation) {
-        console.log(cardAssociations)
+    function updateAssociation(playingCard, newAssociation) {        
         const indexOfPlayingCard = cardAssociations.map(ca => ca.playingCard).indexOf(playingCard);
         setCardAssociations([...cardAssociations.slice(0, indexOfPlayingCard), { playingCard, association: newAssociation }, ...cardAssociations.slice(indexOfPlayingCard + 1)]);
     }

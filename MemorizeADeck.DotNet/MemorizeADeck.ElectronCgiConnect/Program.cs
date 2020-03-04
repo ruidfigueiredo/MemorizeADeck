@@ -83,7 +83,7 @@ namespace MemorizeADeck.ElectronCgiConnect
             });
 
             connection.On("memorization.turnCard", () =>
-            {
+            {                                
                 if (memorizationPageViewModel.TurnCardCommand.CanExecute(null))
                 {
                     memorizationPageViewModel.TurnCardCommand.Execute(null);
@@ -258,32 +258,6 @@ namespace MemorizeADeck.ElectronCgiConnect
             connection.OnAsync("highscores.getAll", async () => await highscoreTable.GetHighscoresAsync());
 
             connection.Listen();
-
-            // var deckBuilder = new DeckBuilder();
-            // deckBuilder.IncludeClubs();
-            // deckBuilder.IncludeSpades();
-            // deckBuilder.IncludeHearts();
-            // deckBuilder.IncludeDiamonds();
-            // deckBuilder.Shuffle();
-            // var deck = new Deck(deckBuilder.Build());
-
-            // var counter = 0;
-            // while(deck.HasMoreCards()) {
-            //     Console.ReadLine();
-            //     deck.TurnCard();
-            //     Console.WriteLine($"{++counter} - {deck.CurrentCard}");                
-            // }
-            // var memorizationPageViewModel = new MemorizationPageViewModel();
-            // var canExecuteTurnCommand = true;
-            // var counter = 0;
-            // while(canExecuteTurnCommand) {
-            //     Console.ReadLine();
-            //     memorizationPageViewModel.TurnCardCommand.Execute(null);
-            //     Console.WriteLine($"{++counter} - {(memorizationPageViewModel.CurrentCard == null ? "N/A" : memorizationPageViewModel.CurrentCard.ToString())}"); 
-            //     canExecuteTurnCommand = memorizationPageViewModel.TurnCardCommand.CanExecute(null);
-            // }
-            // Console.WriteLine(memorizationPageViewModel.EllapsedTime);
-
         }
     }
 }
