@@ -2,18 +2,19 @@
   "name": "memorize-a-deck-electron",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",  
+  "main": "main.js",
   "scripts": {
-    "start": "electron .",
-    "start-prod": "NODE_ENV=production electron ."
+    "start": "cross-env RUN_MODE=local electron .",
+    "start-dev": "electron ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "cross-env": "^7.0.2",
     "electron": "^7.1.8"
   },
   "dependencies": {
-    "electron-cgi": "file:../../published/electron-cgi"
+    "electron-cgi": "^1.0.2"
   }
 }

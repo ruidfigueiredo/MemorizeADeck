@@ -1,7 +1,7 @@
 // Modules to control application life and create native browser window
 const {app, BrowserWindow} = require('electron')
 const path = require('path')
-const isDev = process.env.NODE_ENV !== 'production'
+const isDev = process.env.RUN_MODE !== 'local'
 console.log(`isDev -> `, isDev)
 
 // Keep a global reference of the window object, if you don't, the window will
