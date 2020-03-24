@@ -4,6 +4,8 @@ Demo project for ElectronCGI.
 
 This game/application is a port of a Windows Store application named [Memory Ace](https://www.microsoft.com/en-us/p/memory-ace/9wzdncrddbtd?activetab=pivot:overviewtab).
 
+![Memory Ace running on Linux](memory-ace-ubuntu.gif)
+
 It uses 100% of original non-UI code (ViewModels) and the UI was (re-)created using [React](https://reactjs.org/).
 
 To run it you need the [.NET Core SDK installed](https://dotnet.microsoft.com/) and [Node.js](https://nodejs.org/)
