@@ -23,6 +23,7 @@ If you want to have a "hot reload" experience and be able to change the React pr
     $ yarn start (ignore the errors in the browser window that is opened automatically)
 
 In another terminal:
+
     $ cd memorize-a-deck-electron
     $ npm install
     $ npm run start-dev
