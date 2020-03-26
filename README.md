@@ -2,7 +2,9 @@
 
 Demo project for ElectronCGI.
 
-This game/application is a port of a Windows Store application named [Memory Ace](https://www.microsoft.com/en-us/p/memory-ace/9wzdncrddbtd?activetab=pivot:overviewtab).
+This game/application is a port of a Windows Store application named [Memory Ace](https://www.microsoft.com/en-us/p/memory-ace/9wzdncrddbtd?activetab=pivot:overviewtab) that can run in Windows, Linux and Mac.
+
+This animation was captured in Linux:
 
 ![Memory Ace running on Linux](memory-ace-ubuntu.gif)
 
