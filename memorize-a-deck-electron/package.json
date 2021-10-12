@@ -12,7 +12,7 @@
   "license": "ISC",
   "devDependencies": {
     "cross-env": "^7.0.2",
-    "electron": "^7.1.8"
+    "electron": "^11.5.0"
   },
   "dependencies": {
     "electron-cgi": "^1.0.2"
