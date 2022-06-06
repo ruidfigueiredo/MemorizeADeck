@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-
-namespace Blinkingcaret.Mvvm
+namespace MemorizeADeck.ViewModels
 {
     public class BindableBase : INotifyPropertyChanged
     {

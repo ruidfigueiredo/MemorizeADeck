@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using Blinkingcaret.Cards;
-using Blinkingcaret.MemorizeADeck.ViewModels;
-using Blinkingcaret.MemorizeADeck.ViewModels.CardAssociations;
-using Blinkingcaret.MemorizeADeck.ViewModels.Highscores;
 using ElectronCgi.DotNet;
+using MemorizeADeck.ViewModels;
+using MemorizeADeck.ViewModels.CardAssociations;
+using MemorizeADeck.ViewModels.HighScores;
 
 namespace MemorizeADeck.ElectronCgiConnect
 {
-    class Program
+    static class Program
     {
         static void SetupMemorizationPageViewModel(Connection connection, ICardAssociationRepository cardAssociationRepository)
         {
@@ -16,7 +15,7 @@ namespace MemorizeADeck.ElectronCgiConnect
             connection.OnAsync<dynamic>("memorization.start", async options =>
             {
                 memorizationPageViewModel = new MemorizationPageViewModel();
-                memorizationPageViewModel.CardAssocationRepository = cardAssociationRepository;
+                memorizationPageViewModel.CardAssociationRepository = cardAssociationRepository;
                 await memorizationPageViewModel.LoadCardAssociationsAsync();
                 memorizationPageViewModel.InitDeck(
                     (bool)options.IncludeSpades,
@@ -57,7 +56,7 @@ namespace MemorizeADeck.ElectronCgiConnect
                             connection.Send("memorization.cardsNotSeenCount", memorizationPageViewModel.CardsNotSeenCount);
                             break;
                         default:
-                            Console.Error.WriteLine("Unhandled propertychange event: " + propertyChangedEventArgs.PropertyName);
+                            Console.Error.WriteLine("Unhandled property change event: " + propertyChangedEventArgs.PropertyName);
                             break;
                     }
                 };
@@ -77,10 +76,7 @@ namespace MemorizeADeck.ElectronCgiConnect
                 };
             });
 
-            connection.On("memorization.ellapsedTime", () =>
-            {
-                return memorizationPageViewModel.EllapsedTime;
-            });
+            connection.On("memorization.ellapsedTime", () => memorizationPageViewModel.EllapsedTime);
 
             connection.On("memorization.turnCard", () =>
             {                                
@@ -240,10 +236,7 @@ namespace MemorizeADeck.ElectronCgiConnect
             SetupMemorizationPageViewModel(connection, cardAssociationRepository);
             SetupRecallPageViewModel(connection);
 
-            connection.OnAsync<IEnumerable<CardAssociationViewModel>>("cardAssociations.getAll", async () =>
-            {
-                return await cardAssociationRepository.GetAssociationsAsync();
-            });
+            connection.OnAsync<IEnumerable<CardAssociationViewModel>>("cardAssociations.getAll", async () => await cardAssociationRepository.GetAssociationsAsync());
 
             connection.OnAsync<IEnumerable<CardAssociationViewModel>>("cardAssociations.save", async (newAssociations) =>
             {
@@ -251,11 +244,11 @@ namespace MemorizeADeck.ElectronCgiConnect
             });
 
 
-            var highscoreTable = new HighscoreTable();
-            connection.OnAsync<Highscore>("highscores.save", async highscore => 
-             await highscoreTable.SaveHighScoreAsync(highscore.NumberOfCards, highscore.MemorizationTime));
+            var highScoreTable = new HighScoreTable();
+            connection.OnAsync<HighScore>("highscores.save", async highscore => 
+             await highScoreTable.SaveHighScoreAsync(highscore.NumberOfCards, highscore.MemorizationTime));
              
-            connection.OnAsync("highscores.getAll", async () => await highscoreTable.GetHighscoresAsync());
+            connection.OnAsync("highscores.getAll", async () => await highScoreTable.GetHighScoresAsync());
 
             connection.Listen();
         }

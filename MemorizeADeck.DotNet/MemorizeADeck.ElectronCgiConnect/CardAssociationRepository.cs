@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Blinkingcaret.Cards;
-using Blinkingcaret.MemorizeADeck.ViewModels.CardAssociations;
+using MemorizeADeck.ViewModels;
+using MemorizeADeck.ViewModels.CardAssociations;
 using Newtonsoft.Json;
 
 namespace MemorizeADeck.ElectronCgiConnect

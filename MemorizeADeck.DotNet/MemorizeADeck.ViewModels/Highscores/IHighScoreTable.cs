@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Blinkingcaret.MemorizeADeck.ViewModels.Highscores
+namespace MemorizeADeck.ViewModels.HighScores
 {
-    public interface IHighscoreTable
+    public interface IHighScoreTable
     {
         Task SaveHighScoreAsync(int numberOfCards, TimeSpan memorizationTime);
-        Task<IEnumerable<Highscore>> GetHighscoresAsync();
+        Task<IEnumerable<HighScore>> GetHighScoresAsync();
     }
 
 

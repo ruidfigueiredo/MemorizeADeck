@@ -1,7 +1,4 @@
-﻿using Blinkingcaret.Cards;
-using Blinkingcaret.Mvvm;
-
-namespace Blinkingcaret.MemorizeADeck.ViewModels.CardAssociations
+﻿namespace MemorizeADeck.ViewModels.CardAssociations
 {
     public class CardAssociationViewModel : BindableBase
     {

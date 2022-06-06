@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Linq;
-using System.Collections.ObjectModel;
-using Blinkingcaret.Cards;
-using Blinkingcaret.Mvvm;
 using System.Collections.Generic;
-using Blinkingcaret.MemorizeADeck.ViewModels.CardAssociations;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
+using MemorizeADeck.ViewModels.CardAssociations;
 
-
-namespace Blinkingcaret.MemorizeADeck.ViewModels
+namespace MemorizeADeck.ViewModels
 {
     public delegate void MemorizationCompletedHandler(IEnumerable<PlayingCard> cardsMemorized, TimeSpan ellapsedTime);
 
@@ -16,16 +13,13 @@ namespace Blinkingcaret.MemorizeADeck.ViewModels
     {
         private IDeck _deck;
         private PlayingCard _currentCard;
-        private ITimeTracker _timeTracker;
+        private readonly ITimeTracker _timeTracker;
         private ICardAssociationRepository _cardAssociationRepository;
 
         //So that we can still use the parameterless constructor to instantiate the viewModel in XAML and then in the page's code behind set the repo
-        public ICardAssociationRepository CardAssocationRepository
+        public ICardAssociationRepository CardAssociationRepository
         {
-            set
-            {
-                _cardAssociationRepository = value;
-            }
+            set => _cardAssociationRepository = value;
         }
 
 
@@ -74,7 +68,7 @@ namespace Blinkingcaret.MemorizeADeck.ViewModels
 
         public PlayingCard CurrentCard
         {
-            get { return _currentCard; }
+            get => _currentCard;
             set
             {
                 if (object.Equals(_currentCard, value)) return;

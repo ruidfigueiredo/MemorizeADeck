@@ -3,7 +3,7 @@ using System.Diagnostics.Contracts;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Blinkingcaret.Mvvm
+namespace MemorizeADeck.ViewModels
 {
     public delegate void TimerCallback(object state);
 

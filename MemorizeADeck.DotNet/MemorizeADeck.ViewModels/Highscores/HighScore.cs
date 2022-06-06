@@ -1,13 +1,13 @@
 ﻿using System;
 
-namespace Blinkingcaret.MemorizeADeck.ViewModels.Highscores
+namespace MemorizeADeck.ViewModels.HighScores
 {
-    public class Highscore
+    public class HighScore
     {
         public int NumberOfCards { get; private set; }
         public TimeSpan MemorizationTime { get; private set; }
 
-        public Highscore(int numberOfCards, TimeSpan memorizationTime)
+        public HighScore(int numberOfCards, TimeSpan memorizationTime)
         {
             NumberOfCards = numberOfCards;
             MemorizationTime = memorizationTime;
@@ -15,9 +15,9 @@ namespace Blinkingcaret.MemorizeADeck.ViewModels.Highscores
 
         public override bool Equals(object obj)
         {
-            if (!(obj is Highscore)) return false;
-            Highscore highscore = (Highscore)obj;
-            return NumberOfCards == highscore.NumberOfCards && MemorizationTime == highscore.MemorizationTime;
+            if (!(obj is HighScore)) return false;
+            HighScore highScore = (HighScore)obj;
+            return NumberOfCards == highScore.NumberOfCards && MemorizationTime == highScore.MemorizationTime;
         }
 
         public override int GetHashCode()

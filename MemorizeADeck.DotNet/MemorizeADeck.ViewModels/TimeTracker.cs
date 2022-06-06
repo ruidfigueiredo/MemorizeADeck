@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-
-namespace Blinkingcaret.Mvvm
+namespace MemorizeADeck.ViewModels
 {
     public class TimeTracker : ITimeTracker
     {

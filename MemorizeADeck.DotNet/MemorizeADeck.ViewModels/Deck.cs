@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Blinkingcaret.Cards
+namespace MemorizeADeck.ViewModels
 {
     public class Deck : IDeck
     {

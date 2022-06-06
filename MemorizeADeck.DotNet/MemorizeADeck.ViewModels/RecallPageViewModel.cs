@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Blinkingcaret.Cards;
-using Blinkingcaret.Mvvm;
 
-namespace Blinkingcaret.MemorizeADeck.ViewModels
+namespace MemorizeADeck.ViewModels
 {
     public delegate void RecallCompletedHandler(TimeSpan memorizationTime);
     public class RecallPageViewModel : BindableBase
@@ -28,11 +26,11 @@ namespace Blinkingcaret.MemorizeADeck.ViewModels
         public event RecallCompletedHandler RecallCompleted;
         public event EventHandler HintConfirmationRequired;
         
-        public ObservableCollection<PlayingCard> CardsRemembered {get; private set;}        
+        public ObservableCollection<PlayingCard> CardsRemembered {get; private set;}
 
-        public Suit? SelectedSuit
+        private Suit? SelectedSuit
         {
-            get { return _selectedSuit; }
+            get => _selectedSuit;
             set {
                 if (_selectedSuit != value)
                 {
@@ -44,9 +42,10 @@ namespace Blinkingcaret.MemorizeADeck.ViewModels
                 }
             }
         }
-        public Face? SelectedFace
+
+        private Face? SelectedFace
         {
-            get { return _selectedFace; }
+            get => _selectedFace;
             set
             {
                 if (_selectedFace != value)
@@ -69,24 +68,24 @@ namespace Blinkingcaret.MemorizeADeck.ViewModels
             }
         }
 
-        public bool IsClubSelected { get { return SelectedSuit == Suit.Club; } }
-        public bool IsDiamondSelected { get { return SelectedSuit == Suit.Diamond; } }
-        public bool IsHeartSelected { get { return SelectedSuit == Suit.Heart; } }
-        public bool IsSpadeSelected { get { return SelectedSuit == Suit.Spade; } }
+        public bool IsClubSelected => SelectedSuit == Suit.Club;
+        public bool IsDiamondSelected => SelectedSuit == Suit.Diamond;
+        public bool IsHeartSelected => SelectedSuit == Suit.Heart;
+        public bool IsSpadeSelected => SelectedSuit == Suit.Spade;
 
-        public bool IsTwoSelected { get { return SelectedFace == Face.Two; } }
-        public bool IsThreeSelected { get { return SelectedFace == Face.Three; } }
-        public bool IsFourSelected { get { return SelectedFace == Face.Four; } }
-        public bool IsFiveSelected { get { return SelectedFace == Face.Five; } }
-        public bool IsSixSelected { get { return SelectedFace == Face.Six; } }
-        public bool IsSevenSelected { get { return SelectedFace == Face.Seven; } }
-        public bool IsEightSelected { get { return SelectedFace == Face.Eight; } }
-        public bool IsNineSelected { get { return SelectedFace == Face.Nine; } }
-        public bool IsTenSelected { get { return SelectedFace == Face.Ten; } }
-        public bool IsJackSelected { get { return SelectedFace == Face.Jack; } }
-        public bool IsQueenSelected { get { return SelectedFace == Face.Queen; } }
-        public bool IsKingSelected { get { return SelectedFace == Face.King; } }
-        public bool IsAceSelected { get { return SelectedFace == Face.Ace; } }
+        public bool IsTwoSelected => SelectedFace == Face.Two;
+        public bool IsThreeSelected => SelectedFace == Face.Three;
+        public bool IsFourSelected => SelectedFace == Face.Four;
+        public bool IsFiveSelected => SelectedFace == Face.Five;
+        public bool IsSixSelected => SelectedFace == Face.Six;
+        public bool IsSevenSelected => SelectedFace == Face.Seven;
+        public bool IsEightSelected => SelectedFace == Face.Eight;
+        public bool IsNineSelected => SelectedFace == Face.Nine;
+        public bool IsTenSelected => SelectedFace == Face.Ten;
+        public bool IsJackSelected => SelectedFace == Face.Jack;
+        public bool IsQueenSelected => SelectedFace == Face.Queen;
+        public bool IsKingSelected => SelectedFace == Face.King;
+        public bool IsAceSelected => SelectedFace == Face.Ace;
         
 
         public IDelegateCommand SelectSuitCommand { get; private set; }

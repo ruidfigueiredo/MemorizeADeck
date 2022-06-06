@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Blinkingcaret.MemorizeADeck.ViewModels.CardAssociations
+namespace MemorizeADeck.ViewModels.CardAssociations
 {
     public interface ICardAssociationRepository
     {

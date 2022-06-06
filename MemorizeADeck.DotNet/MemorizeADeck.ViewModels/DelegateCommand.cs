@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Blinkingcaret.Mvvm
+namespace MemorizeADeck.ViewModels
 {
     public sealed class DelegateCommand : IDelegateCommand
     {
@@ -20,11 +16,11 @@ namespace Blinkingcaret.Mvvm
         public DelegateCommand(Action<object> execute)
         {
             _execute = execute;
-            _canExecute = AlwaysCanExecute;   
+            _canExecute = AlwaysCanExecute;
         }
 
         public void RaiseCanExecuteChanged()
-        {            
+        {
             var handler = CanExecuteChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);

@@ -1,4 +1,4 @@
-﻿namespace Blinkingcaret.Cards
+﻿namespace MemorizeADeck.ViewModels
 {
     public enum Suit
     {
